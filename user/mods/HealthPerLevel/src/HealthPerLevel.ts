@@ -35,7 +35,7 @@ class HealthPerLevel implements IPreAkiLoadMod, IPostDBLoadMod
       dbServer.config.Health.ProfileHealthSettings.BodyPartsSettings;
   }
 
-  preAkiLoad(
+  preSptLoad(
     container: DependencyContainer,
     pmcProfile: IPmcData
     ): void {
@@ -46,6 +46,7 @@ class HealthPerLevel implements IPreAkiLoadMod, IPostDBLoadMod
     );
     const pHelp = container.resolve<ProfileHelper>("ProfileHelper");
     this.logger = container.resolve<ILogger>("WinstonLogger");
+    this.logger.info("[HealthPerLevel] Loading HealthPerLevel...")
     staticRMS.registerStaticRouter(
       "HealthPerLevel",
       [
