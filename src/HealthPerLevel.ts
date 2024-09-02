@@ -197,7 +197,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
-                if (this.config.health_per_health_skill_level_scav == true)
+                if (this.config.health_per_health_skill_level_pmc == true)
                 {
                     bodyPart[key].Health.Maximum += healthBonus;
                 }
@@ -206,7 +206,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             {
                 bodyPart[key].Health.Current =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
-                if (this.config.health_per_health_skill_level_scav == true)
+                if (this.config.health_per_health_skill_level_pmc == true)
                 {
                     bodyPart[key].Health.Current += healthBonus;
                 }
