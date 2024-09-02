@@ -1,2 +1,9 @@
+.DS_Store
+**/package-lock.json
+**/node_modules/
+**/dist/
+updateTypes.ps1
+NewTypes/
+
 *.png
 HealthPerLevel.zip
