@@ -4,6 +4,3 @@
 **/dist/
 updateTypes.ps1
 NewTypes/
-
-*.png
-HealthPerLevel.zip
