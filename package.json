@@ -1,5 +1,5 @@
 {
-  "name": "HealthPerLevelREBOOT",
+  "name": "HealthPerLevel",
   "version": "1.0.0",
   "main": "src/HealthPerLevel.js",
   "license": "CC BY-NC-SA 4.0",
@@ -7,19 +7,20 @@
   "sptVersion": "~3.9",
   "scripts": {
     "setup": "npm i",
-    "build": "node ./packageBuild.ts"
+    "build": "node ./packageBuild.ts",
+    "buildinfo": "node ./build.mjs --verbose"
   },
   "devDependencies": {
-    "@types/node": "20.10.6",
-    "@typescript-eslint/eslint-plugin": "6.17.0",
-    "@typescript-eslint/parser": "6.17.0",
-    "archiver": "^6.0.1",
-    "eslint": "8.56.0",
-    "fs-extra": "^11.2.0",
-    "ignore": "^5.3",
+    "@types/node": "20.11",
+    "@typescript-eslint/eslint-plugin": "7.2",
+    "@typescript-eslint/parser": "7.2",
+    "archiver": "^6.0",
+    "eslint": "8.57",
+    "fs-extra": "11.2",
+    "ignore": "^5.2",
     "os": "^0.1.2",
     "tsyringe": "4.8.0",
-    "typescript": "5.3.3",
-    "winston": "3.11.0"
+    "typescript": "5.4",
+    "winston": "3.12"
 }
 }
