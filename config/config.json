@@ -10,7 +10,7 @@
 
 
     "The following lines are for changing the base health values for the playerPMC, the default values are for default EFT" : "< Description",
-    "health_per_health_skill_level": true,
+    "health_per_health_skill_level_pmc": true,
     "thorax_base_health_PMC": 85,
     "stomach_base_health_PMC": 70,
     "head_base_health_PMC": 35,
@@ -45,6 +45,7 @@
     "levels_per_increment_SCAV" : 5,
 
     "The following lines are for changing the base health values for the playerscav, the default values are for default EFT" : "< Description",
+    "health_per_health_skill_level_scav": true,
     "thorax_base_health_SCAV": 85,
     "stomach_base_health_SCAV": 70,
     "head_base_health_SCAV": 35,
