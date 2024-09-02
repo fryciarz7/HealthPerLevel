@@ -10,6 +10,7 @@
 
 
     "The following lines are for changing the base health values for the playerPMC, the default values are for default EFT" : "< Description",
+    "health_per_health_skill_level": true,
     "thorax_base_health_PMC": 85,
     "stomach_base_health_PMC": 70,
     "head_base_health_PMC": 35,
