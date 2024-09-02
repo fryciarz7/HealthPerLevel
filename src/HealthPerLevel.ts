@@ -53,9 +53,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                         {
                             this.pmcBodyParts = pHelp.getPmcProfile(sessionID).Health.BodyParts;
                             this.pmcLevel = pHelp.getPmcProfile(sessionID).Info.Level;
-                            this.logger.warning("[HealthPerLevel] " + this.pmcLevel);
                             this.pmcProfile = pHelp.getPmcProfile(sessionID);
-                            this.logger.info("[HealthPerLevel] PMC Data: " + this.pmcProfile.Skills.Common[SkillTypes.HEALTH]);
                             this.pmcHealthSkillLevel = pHelp.getSkillFromProfile(this.pmcProfile, SkillTypes.HEALTH);
                             this.healthElite = this.isHealthElite();
 
