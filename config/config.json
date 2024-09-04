@@ -1,66 +1,68 @@
 {
-"split_scav_and_PMC_health" : "False", 
-"---If above is False just use the _PMC values for both scav and PMC---" : "< Description",
+    "split_scav_and_PMC_health" : false, 
+    "---If above is False just use the _PMC values for both scav and PMC---" : "< Description",
 
 
 
 
-"How many levels does the playerPMC have to level up by before the code changes their health values" : "< Description",
-"levels_per_increment_PMC" : 5,
+    "How many levels does the playerPMC have to level up by before the code changes their health values" : "< Description",
+    "levels_per_increment_PMC" : 5,
 
 
-"The following lines are for changing the base health values for the playerPMC, the default values are for default EFT" : "< Description",
-"thorax_base_health_PMC": 85,
-"stomach_base_health_PMC": 70,
-"head_base_health_PMC": 35,
-"left_arm_base_health_PMC": 60,
-"right_arm_base_health_PMC": 60,
-"left_leg_base_health_PMC": 65,
-"right_leg_base_health_PMC":65,
-"---End of PMC default health values---" : "< Description",
+    "The following lines are for changing the base health values for the playerPMC, the default values are for default EFT" : "< Description",
+    "health_per_health_skill_level_pmc": true,
+    "thorax_base_health_PMC": 85,
+    "stomach_base_health_PMC": 70,
+    "head_base_health_PMC": 35,
+    "left_arm_base_health_PMC": 60,
+    "right_arm_base_health_PMC": 60,
+    "left_leg_base_health_PMC": 65,
+    "right_leg_base_health_PMC":65,
+    "---End of PMC default health values---" : "< Description",
 
 
-"The following lines are for changing the amount of health increased per increment for PMC/ALL" : "< Description",
-"thorax_health_per_level_PMC": 2,
-"stomach_health_per_level_PMC": 2,
-"head_health_per_level_PMC": 2,
-"left_arm_per_level_PMC": 3,
-"right_arm_per_level_PMC": 3,
-"left_leg_per_level_PMC": 3,
-"right_leg_per_level_PMC": 3,
-"---End of PMC Health per level values---" : "< Description",
-
-
-
-
-"ALL of the follwing lines are only neccessary if split_scav_and_PMC_health is set to TRUE" : " < Description",
+    "The following lines are for changing the amount of health increased per increment for PMC/ALL" : "< Description",
+    "thorax_health_per_level_PMC": 2,
+    "stomach_health_per_level_PMC": 2,
+    "head_health_per_level_PMC": 2,
+    "left_arm_per_level_PMC": 3,
+    "right_arm_per_level_PMC": 3,
+    "left_leg_per_level_PMC": 3,
+    "right_leg_per_level_PMC": 3,
+    "---End of PMC Health per level values---" : "< Description",
 
 
 
 
+    "ALL of the follwing lines are only neccessary if split_scav_and_PMC_health is set to TRUE" : " < Description",
 
 
-"How many levels does the playerscav have to level up by before the code changes their health values" : "< Description",
-"levels_per_increment_SCAV" : 5,
-
-"The following lines are for changing the base health values for the playerscav, the default values are for default EFT" : "< Description",
-"thorax_base_health_SCAV": 85,
-"stomach_base_health_SCAV": 70,
-"head_base_health_SCAV": 35,
-"left_arm_base_health_SCAV": 60,
-"right_arm_base_health_SCAV": 60,
-"left_leg_base_health_SCAV": 65,
-"right_leg_base_health_SCAV":65,
-"---End of SCAV default health values---" : "< Description",
 
 
-"The following lines are for changing the amount of health increased per increment for SCAV ONLY" : "< Description",
-"thorax_health_per_level_SCAV": 2,
-"stomach_health_per_level_SCAV": 2,
-"head_health_per_level_SCAV": 2,
-"left_arm_per_level_SCAV": 3,
-"right_arm_per_level_SCAV": 3,
-"left_leg_per_level_SCAV": 3,
-"right_leg_per_level_SCAV": 3,
-"---End of SCAV Health per level values---" : "< Description"
+
+
+    "How many levels does the playerscav have to level up by before the code changes their health values" : "< Description",
+    "levels_per_increment_SCAV" : 5,
+
+    "The following lines are for changing the base health values for the playerscav, the default values are for default EFT" : "< Description",
+    "health_per_health_skill_level_scav": true,
+    "thorax_base_health_SCAV": 85,
+    "stomach_base_health_SCAV": 70,
+    "head_base_health_SCAV": 35,
+    "left_arm_base_health_SCAV": 60,
+    "right_arm_base_health_SCAV": 60,
+    "left_leg_base_health_SCAV": 65,
+    "right_leg_base_health_SCAV":65,
+    "---End of SCAV default health values---" : "< Description",
+
+
+    "The following lines are for changing the amount of health increased per increment for SCAV ONLY" : "< Description",
+    "thorax_health_per_level_SCAV": 2,
+    "stomach_health_per_level_SCAV": 2,
+    "head_health_per_level_SCAV": 2,
+    "left_arm_per_level_SCAV": 3,
+    "right_arm_per_level_SCAV": 3,
+    "left_leg_per_level_SCAV": 3,
+    "right_leg_per_level_SCAV": 3,
+    "---End of SCAV Health per level values---" : "< Description"
 }
