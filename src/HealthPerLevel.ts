@@ -150,13 +150,13 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
+        const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100);
         for (const key in this.increasePerLevelPMC) 
         {
             bodyPart[key].Health.Maximum =
         preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
             if (this.config.health_per_health_skill_level_pmc == true && this.pmcHealthSkillLevel)
             {
-                const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100);
                 bodyPart[key].Health.Maximum += healthBonus;
             }
         }
