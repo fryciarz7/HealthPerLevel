@@ -82,7 +82,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
-                                    this.scavLevel,
+                                    this.pmcLevel,
                                     this.baseHealthPMC
                                 );
                             }
@@ -126,7 +126,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             { //If split health is FALSE use this
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
-                                    this.scavLevel,
+                                    this.pmcLevel,
                                     this.baseHealthPMC
                 
                                 );
