@@ -70,7 +70,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.pmcLevel,
                                 this.baseHealthPMC
                             );
-                            if (this.config.split_scav_and_PMC_health == "True") 
+                            if (this.config.split_scav_and_PMC_health == true) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
@@ -113,7 +113,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.pmcLevel,
                                 this.baseHealthPMC
                             );
-                            if (this.config.split_scav_and_PMC_health == "True") 
+                            if (this.config.split_scav_and_PMC_health == true) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
@@ -168,7 +168,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        if (this.config.split_scav_and_PMC_health == "True") 
+        if (this.config.split_scav_and_PMC_health == true) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
             const healthBonus = Math.floor(this.scavHealthSkillLevel.Progress / 100);
             for (const key in this.increasePerLevelSCAV) 

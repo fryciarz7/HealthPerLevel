@@ -1,5 +1,5 @@
 {
-    "split_scav_and_PMC_health" : "False", 
+    "split_scav_and_PMC_health" : false, 
     "---If above is False just use the _PMC values for both scav and PMC---" : "< Description",
 
 
