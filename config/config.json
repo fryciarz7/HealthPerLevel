@@ -32,6 +32,16 @@
     "right_leg_per_level_PMC": 3,
     "---End of PMC Health per level values---" : "< Description",
 
+    "The following lines are for changing the amount of health increased per increment of Health skill for PMC/ALL" : "< Description",
+    "health_skill_thorax_health_per_level_PMC": 1,
+    "health_skill_stomach_health_per_level_PMC": 1,
+    "health_skill_head_health_per_level_PMC": 1,
+    "health_skill_left_arm_per_level_PMC": 1,
+    "health_skill_right_arm_per_level_PMC": 1,
+    "health_skill_left_leg_per_level_PMC": 1,
+    "health_skill_right_leg_per_level_PMC": 1,
+    "---End of PMC Health per Health skill level values---" : "< Description",
+
 
 
 
@@ -66,5 +76,15 @@
     "right_arm_per_level_SCAV": 3,
     "left_leg_per_level_SCAV": 3,
     "right_leg_per_level_SCAV": 3,
-    "---End of SCAV Health per level values---" : "< Description"
+    "---End of SCAV Health per level values---" : "< Description",
+    
+    "The following lines are for changing the amount of health increased per increment of Health Skill for SCAV ONLY" : "< Description",
+    "health_skill_thorax_health_per_level_SCAV": 1,
+    "health_skill_stomach_health_per_level_SCAV": 1,
+    "health_skill_head_health_per_level_SCAV": 1,
+    "health_skill_left_arm_per_level_SCAV": 1,
+    "health_skill_right_arm_per_level_SCAV": 1,
+    "health_skill_left_leg_per_level_SCAV": 1,
+    "health_skill_right_leg_per_level_SCAV": 1,
+    "---End of SCAV Health per Health Skill level values---" : "< Description"
 }
