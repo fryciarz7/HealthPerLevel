@@ -150,15 +150,13 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC);
-        this.logger.warning("🚀 ~ PMC healthBonus:" + healthBonus);
         for (const key in this.increasePerLevelPMC) 
         {
             bodyPart[key].Health.Maximum =
-        preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
+            preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
             if (this.config.health_per_health_skill_level_pmc == true && this.pmcHealthSkillLevel)
             {
-                bodyPart[key].Health.Maximum += healthBonus;
+                bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC) * this.increasePerHealthSkillLevelPMC[key];
             }
         }
     }
@@ -171,34 +169,28 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     {
         if (this.config.split_scav_and_PMC_health == true) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
-            const healthBonus = Math.floor(this.scavHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_SCAV);
-            this.logger.warning("🚀 ~ PMC healthBonus:" + healthBonus);
             for (const key in this.increasePerLevelSCAV) 
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_SCAV)) * this.increasePerLevelSCAV[key];
-                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
                 if (this.config.health_per_health_skill_level_scav == true)
                 {
-                    bodyPart[key].Health.Maximum += healthBonus;
-                    bodyPart[key].Health.Current += healthBonus;
+                    bodyPart[key].Health.Maximum += Math.floor(this.scavHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_SCAV) * this.increasePerHealthSkillLevelSCAV[key];
                 }
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
         else 
         {
-            const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC);
-            this.logger.warning("🚀 ~ PMC healthBonus:" + healthBonus);
             for (const key in this.increasePerLevelPMC) 
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
-                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
                 if (this.config.health_per_health_skill_level_pmc == true)
                 {
-                    bodyPart[key].Health.Maximum += healthBonus;
-                    bodyPart[key].Health.Current += healthBonus;
+                    bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC) * this.increasePerHealthSkillLevelPMC[key];
                 }
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
     }
