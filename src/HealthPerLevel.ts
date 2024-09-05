@@ -158,6 +158,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             {
                 bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC) * this.increasePerHealthSkillLevelPMC[key];
             }
+            if (bodyPart[key].Health.Current > bodyPart[key].Health.Maximum)
+            {
+                this.logger.warning("[HealthPerLevel] How is your health higher than maximum, again? I mean your " + key + " is something else.");
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
+            }
         }
     }
 
