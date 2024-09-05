@@ -233,6 +233,17 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         RightArm: this.config.right_arm_per_level_PMC,
         RightLeg: this.config.right_leg_per_level_PMC
     };
+
+    private increasePerHealthSkillLevelPMC: { [key: string]: number } = {
+        //Amount of health that is added per Health Skill level, broken down per body part from the config.
+        Chest: this.config.health_skill_thorax_health_per_level_PMC,
+        Stomach: this.config.health_skill_stomach_health_per_level_PMC,
+        Head: this.config.health_skill_head_health_per_level_PMC,
+        LeftArm: this.config.health_skill_left_arm_per_level_PMC,
+        LeftLeg: this.config.health_skill_left_leg_per_level_PMC,
+        RightArm: this.config.health_skill_right_arm_per_level_PMC,
+        RightLeg: this.config.health_skill_right_leg_per_level_PMC
+    }
   
     private increasePerLevelSCAV: { [key: string]: number } = {
         //Amount of health that is added per level, broken down per body part from the config.
@@ -243,6 +254,17 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_per_level_SCAV,
         RightArm: this.config.right_arm_per_level_SCAV,
         RightLeg: this.config.right_leg_per_level_SCAV
+    };
+  
+    private increasePerHealthSkillLevelSCAV: { [key: string]: number } = {
+        //Amount of health that is added per Health Skill level, broken down per body part from the config.
+        Chest: this.config.health_skill_thorax_health_per_level_SCAV,
+        Stomach: this.config.health_skill_stomach_health_per_level_SCAV,
+        Head: this.config.health_skill_head_health_per_level_SCAV,
+        LeftArm: this.config.health_skill_left_arm_per_level_SCAV,
+        LeftLeg: this.config.health_skill_left_leg_per_level_SCAV,
+        RightArm: this.config.health_skill_right_arm_per_level_SCAV,
+        RightLeg: this.config.health_skill_right_leg_per_level_SCAV
     };
     
     private baseHealthPMC: { [key: string]: number } = {
