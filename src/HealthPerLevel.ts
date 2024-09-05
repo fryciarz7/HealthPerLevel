@@ -232,7 +232,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_per_level_PMC,
         RightArm: this.config.right_arm_per_level_PMC,
         RightLeg: this.config.right_leg_per_level_PMC
-      
     };
   
     private increasePerLevelSCAV: { [key: string]: number } = {
@@ -244,7 +243,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_per_level_SCAV,
         RightArm: this.config.right_arm_per_level_SCAV,
         RightLeg: this.config.right_leg_per_level_SCAV
-      
     };
     
     private baseHealthPMC: { [key: string]: number } = {
@@ -256,7 +254,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_base_health_PMC,
         RightArm: this.config.right_arm_base_health_PMC,
         RightLeg: this.config.right_leg_base_health_PMC
-      
     };
 
     private baseHealthSCAV: { [key: string]: number } = {
@@ -268,7 +265,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_base_health_SCAV,
         RightArm: this.config.right_arm_base_health_SCAV,
         RightLeg: this.config.right_leg_base_health_SCAV
-      
     };
 }
 
