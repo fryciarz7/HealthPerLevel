@@ -200,6 +200,21 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
+    private calcLightBleedingThreshold() 
+    {
+
+    }
+
+    private calcHeavyBleedingThreshold() 
+    {
+
+    }
+
+    private calcFractureThreshold() 
+    {
+
+    }
+
     //private isHealthElite(skillType: SkillTypes, pmcProfile: IPmcData): boolean //Supposed to check if health is 'elite' but doesn't work yet
     private isHealthElite(): boolean //Supposed to check if health is 'elite' but doesn't work yet
     {
