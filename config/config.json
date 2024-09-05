@@ -7,6 +7,7 @@
 
     "How many levels does the playerPMC have to level up by before the code changes their health values" : "< Description",
     "levels_per_increment_PMC" : 5,
+    "health_skill_levels_per_increment_PMC": 1,
 
 
     "The following lines are for changing the base health values for the playerPMC, the default values are for default EFT" : "< Description",
@@ -31,6 +32,16 @@
     "right_leg_per_level_PMC": 3,
     "---End of PMC Health per level values---" : "< Description",
 
+    "The following lines are for changing the amount of health increased per increment of Health skill for PMC/ALL" : "< Description",
+    "health_skill_thorax_health_per_level_PMC": 1,
+    "health_skill_stomach_health_per_level_PMC": 1,
+    "health_skill_head_health_per_level_PMC": 1,
+    "health_skill_left_arm_per_level_PMC": 1,
+    "health_skill_right_arm_per_level_PMC": 1,
+    "health_skill_left_leg_per_level_PMC": 1,
+    "health_skill_right_leg_per_level_PMC": 1,
+    "---End of PMC Health per Health skill level values---" : "< Description",
+
 
 
 
@@ -43,6 +54,7 @@
 
     "How many levels does the playerscav have to level up by before the code changes their health values" : "< Description",
     "levels_per_increment_SCAV" : 5,
+    "health_skill_levels_per_increment_SCAV": 1,
 
     "The following lines are for changing the base health values for the playerscav, the default values are for default EFT" : "< Description",
     "health_per_health_skill_level_scav": true,
@@ -64,5 +76,15 @@
     "right_arm_per_level_SCAV": 3,
     "left_leg_per_level_SCAV": 3,
     "right_leg_per_level_SCAV": 3,
-    "---End of SCAV Health per level values---" : "< Description"
+    "---End of SCAV Health per level values---" : "< Description",
+    
+    "The following lines are for changing the amount of health increased per increment of Health Skill for SCAV ONLY" : "< Description",
+    "health_skill_thorax_health_per_level_SCAV": 1,
+    "health_skill_stomach_health_per_level_SCAV": 1,
+    "health_skill_head_health_per_level_SCAV": 1,
+    "health_skill_left_arm_per_level_SCAV": 1,
+    "health_skill_right_arm_per_level_SCAV": 1,
+    "health_skill_left_leg_per_level_SCAV": 1,
+    "health_skill_right_leg_per_level_SCAV": 1,
+    "---End of SCAV Health per Health Skill level values---" : "< Description"
 }

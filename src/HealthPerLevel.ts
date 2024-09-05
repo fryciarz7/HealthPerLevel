@@ -150,14 +150,18 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100);
         for (const key in this.increasePerLevelPMC) 
         {
             bodyPart[key].Health.Maximum =
-        preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
+            preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
             if (this.config.health_per_health_skill_level_pmc == true && this.pmcHealthSkillLevel)
             {
-                bodyPart[key].Health.Maximum += healthBonus;
+                bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC) * this.increasePerHealthSkillLevelPMC[key];
+            }
+            if (bodyPart[key].Health.Current > bodyPart[key].Health.Maximum)
+            {
+                this.logger.warning("[HealthPerLevel] How is your health higher than maximum, again? I mean your " + key + " is something else.");
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
     }
@@ -170,32 +174,28 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     {
         if (this.config.split_scav_and_PMC_health == true) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
-            const healthBonus = Math.floor(this.scavHealthSkillLevel.Progress / 100);
             for (const key in this.increasePerLevelSCAV) 
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_SCAV)) * this.increasePerLevelSCAV[key];
-                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
                 if (this.config.health_per_health_skill_level_scav == true)
                 {
-                    bodyPart[key].Health.Maximum += healthBonus;
-                    bodyPart[key].Health.Current += healthBonus;
+                    bodyPart[key].Health.Maximum += Math.floor(this.scavHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_SCAV) * this.increasePerHealthSkillLevelSCAV[key];
                 }
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
         else 
         {
-            const healthBonus = Math.floor(this.pmcHealthSkillLevel.Progress / 100);
             for (const key in this.increasePerLevelPMC) 
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (Math.trunc((accountLevel - 1)/this.config.levels_per_increment_PMC)) * this.increasePerLevelPMC[key];
-                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
                 if (this.config.health_per_health_skill_level_pmc == true)
                 {
-                    bodyPart[key].Health.Maximum += healthBonus;
-                    bodyPart[key].Health.Current += healthBonus;
+                    bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.config.health_skill_levels_per_increment_PMC) * this.increasePerHealthSkillLevelPMC[key];
                 }
+                bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
     }
@@ -229,8 +229,18 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_per_level_PMC,
         RightArm: this.config.right_arm_per_level_PMC,
         RightLeg: this.config.right_leg_per_level_PMC
-      
     };
+
+    private increasePerHealthSkillLevelPMC: { [key: string]: number } = {
+        //Amount of health that is added per Health Skill level, broken down per body part from the config.
+        Chest: this.config.health_skill_thorax_health_per_level_PMC,
+        Stomach: this.config.health_skill_stomach_health_per_level_PMC,
+        Head: this.config.health_skill_head_health_per_level_PMC,
+        LeftArm: this.config.health_skill_left_arm_per_level_PMC,
+        LeftLeg: this.config.health_skill_left_leg_per_level_PMC,
+        RightArm: this.config.health_skill_right_arm_per_level_PMC,
+        RightLeg: this.config.health_skill_right_leg_per_level_PMC
+    }
   
     private increasePerLevelSCAV: { [key: string]: number } = {
         //Amount of health that is added per level, broken down per body part from the config.
@@ -241,7 +251,17 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_per_level_SCAV,
         RightArm: this.config.right_arm_per_level_SCAV,
         RightLeg: this.config.right_leg_per_level_SCAV
-      
+    };
+  
+    private increasePerHealthSkillLevelSCAV: { [key: string]: number } = {
+        //Amount of health that is added per Health Skill level, broken down per body part from the config.
+        Chest: this.config.health_skill_thorax_health_per_level_SCAV,
+        Stomach: this.config.health_skill_stomach_health_per_level_SCAV,
+        Head: this.config.health_skill_head_health_per_level_SCAV,
+        LeftArm: this.config.health_skill_left_arm_per_level_SCAV,
+        LeftLeg: this.config.health_skill_left_leg_per_level_SCAV,
+        RightArm: this.config.health_skill_right_arm_per_level_SCAV,
+        RightLeg: this.config.health_skill_right_leg_per_level_SCAV
     };
     
     private baseHealthPMC: { [key: string]: number } = {
@@ -253,7 +273,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_base_health_PMC,
         RightArm: this.config.right_arm_base_health_PMC,
         RightLeg: this.config.right_leg_base_health_PMC
-      
     };
 
     private baseHealthSCAV: { [key: string]: number } = {
@@ -265,7 +284,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         LeftLeg: this.config.left_leg_base_health_SCAV,
         RightArm: this.config.right_arm_base_health_SCAV,
         RightLeg: this.config.right_leg_base_health_SCAV
-      
     };
 }
 
