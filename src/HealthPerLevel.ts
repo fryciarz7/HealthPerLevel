@@ -42,7 +42,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             "StaticRouterModService"
         );
         const pHelp = container.resolve<ProfileHelper>("ProfileHelper");
-        this.logger = container.resolve<ILogger>("WinstonLogger");
+        this.resolveInterfaces(container);
         this.logger.info("[HealthPerLevel] Loading HealthPerLevel...")
         staticRMS.registerStaticRouter(
             "HealthPerLevel",
@@ -142,6 +142,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             ],
             "aki"
         );
+    }
+
+    private resolveInterfaces(container: DependencyContainer) 
+    {
+        this.logger = container.resolve<ILogger>("WinstonLogger");
+        this.lightBleeding = container.resolve<ILightBleeding>("ILightBleeding");
+        this.heavyBleeding = container.resolve<IHeavyBleeding>("IHeavyBleeding");
+        this.fracture = container.resolve<IFracture>("IFracture");
     }
 
     private calcPMCHealth(
