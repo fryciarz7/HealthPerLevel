@@ -31,7 +31,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private healthElite: boolean;
     private lightBleeding: ILightBleeding; // Probabilit.Threshold = 35% of HP loss per body part
     private heavyBleeding: IHeavyBleeding; // Probabilit.Threshold = 50% of HP loss per body part
-    private fracture: IFracture; // Probabilit.Threshold = 20% of HP loss per body part
+    private fracture: IFracture; // Probabilit.Threshold = 20% or 30% of HP loss per body part
 
     postDBLoad(container: DependencyContainer): void 
     {
