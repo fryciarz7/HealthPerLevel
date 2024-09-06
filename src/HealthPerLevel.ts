@@ -175,7 +175,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         for (const key in ConfigExports.increasePerLevelPMC) 
         {
             bodyPart[key].Health.Maximum =
-            preset[key] + (Math.trunc((accountLevel - 1)/ConfigExports.levelsPerIncrementPmc)) * ConfigExports.increasePerLevelPMC[key];
+            preset[key] + (this.getPmcIncrement(accountLevel)) * ConfigExports.increasePerLevelPMC[key];
             if (ConfigExports.healthPerHealthSkillLevelPmc == true && this.pmcHealthSkillLevel)
             {
                 bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementPmc) * ConfigExports.increasePerHealthSkillLevelPMC[key];
@@ -199,7 +199,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             for (const key in ConfigExports.increasePerLevelSCAV) 
             {
                 bodyPart[key].Health.Maximum =
-            preset[key] + (Math.trunc((accountLevel - 1)/ConfigExports.levelsPerIncrementScav)) * ConfigExports.increasePerLevelSCAV[key];
+            preset[key] + (this.getScavIncrement(accountLevel)) * ConfigExports.increasePerLevelSCAV[key];
                 if (ConfigExports.healthPerHealthSkillLevelScav == true)
                 {
                     bodyPart[key].Health.Maximum += Math.floor(this.scavHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementScav) * ConfigExports.increasePerHealthSkillLevelSCAV[key];
@@ -212,7 +212,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             for (const key in ConfigExports.increasePerLevelPMC) 
             {
                 bodyPart[key].Health.Maximum =
-            preset[key] + (Math.trunc((accountLevel - 1)/ConfigExports.levelsPerIncrementPmc)) * ConfigExports.increasePerLevelPMC[key];
+            preset[key] + (this.getPmcIncrement(accountLevel)) * ConfigExports.increasePerLevelPMC[key];
                 if (ConfigExports.healthPerHealthSkillLevelPmc == true)
                 {
                     bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementPmc) * ConfigExports.increasePerHealthSkillLevelPMC[key];
@@ -274,6 +274,16 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private isHealthPoolsSplit() 
     {
         return ConfigExports.splitScavAndPmcHealth == true;
+    }
+
+    private getPmcIncrement(accountLevel: number) 
+    {
+        return Math.trunc((accountLevel - 1) / ConfigExports.levelsPerIncrementPmc);
+    }
+
+    private getScavIncrement(accountLevel: number) 
+    {
+        return Math.trunc((accountLevel - 1) / ConfigExports.levelsPerIncrementScav);
     }
 }
 
