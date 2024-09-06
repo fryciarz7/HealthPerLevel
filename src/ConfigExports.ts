@@ -2,13 +2,13 @@ export abstract class ConfigExports
 {
     private static config = require("../config/config.json");
 
-    public static split_scav_and_PMC_health = this.config.split_scav_and_PMC_health;
-    public static levels_per_increment_PMC = this.config.levels_per_increment_PMC;
-    public static health_per_health_skill_level_pmc = this.config.health_per_health_skill_level_pmc;
-    public static health_skill_levels_per_increment_PMC = this.config.health_skill_levels_per_increment_PMC;
-    public static levels_per_increment_SCAV = this.config.levels_per_increment_SCAV;
-    public static health_per_health_skill_level_scav = this.config.health_per_health_skill_level_scav;
-    public static health_skill_levels_per_increment_SCAV = this.config.health_skill_levels_per_increment_SCAV;
+    public static splitScavAndPmcHealth = this.config.split_scav_and_PMC_health;
+    public static levelsPerIncrementPmc = this.config.levels_per_increment_PMC;
+    public static healthPerHealthSkillLevelPmc = this.config.health_per_health_skill_level_pmc;
+    public static healthSkillLevelsPerIncrementPmc = this.config.health_skill_levels_per_increment_PMC;
+    public static levelsPerIncrementScav = this.config.levels_per_increment_SCAV;
+    public static healthPerHealthSkillLevelScav = this.config.health_per_health_skill_level_scav;
+    public static healthSkillLevelsPerIncrementScav = this.config.health_skill_levels_per_increment_SCAV;
     public static increasePerLevelPMC: { [key: string]: number } = {
         //Amount of health that is added per level, broken down per body part from the config.
         Chest: this.config.thorax_health_per_level_PMC,
