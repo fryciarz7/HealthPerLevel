@@ -40,6 +40,9 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             .getTables().globals;
         this.globalBodyParts =
       dbServer.config.Health.ProfileHealthSettings.BodyPartsSettings;
+        this.lightBleeding = dbServer.config.Health.Effects.LightBleeding;
+        this.heavyBleeding = dbServer.config.Health.Effects.HeavyBleeding;
+        this.fracture = dbServer.config.Health.Effects.Fracture;
     }
 
     preSptLoad(container: DependencyContainer): void 
