@@ -70,7 +70,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.pmcLevel,
                                 this.baseHealthPMC
                             );
-                            if (this.config.split_scav_and_PMC_health == true) 
+                            if (this.isHealthPoolsSplit()) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
@@ -113,7 +113,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.pmcLevel,
                                 this.baseHealthPMC
                             );
-                            if (this.config.split_scav_and_PMC_health == true) 
+                            if (this.isHealthPoolsSplit()) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
@@ -180,7 +180,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        if (this.config.split_scav_and_PMC_health == true) 
+        if (this.isHealthPoolsSplit()) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
             for (const key in this.increasePerLevelSCAV) 
             {
@@ -243,6 +243,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         //This area does nothing currently but eventually bots will also increase per their level.
 
     }
+
+    private isHealthPoolsSplit() 
+    {
+        return this.config.split_scav_and_PMC_health == true;
+    }
+
     private increasePerLevelPMC: { [key: string]: number } = {
         //Amount of health that is added per level, broken down per body part from the config.
         Chest: this.config.thorax_health_per_level_PMC,
