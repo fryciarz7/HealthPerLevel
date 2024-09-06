@@ -96,9 +96,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                     ConfigExports.baseHealthPMC
                                 );
                             }
-                            this.calcLightBleedingThreshold(this.pmcBodyParts);
-                            this.calcHeavyBleedingThreshold(this.pmcBodyParts);
-                            this.calcFractureThreshold(this.pmcBodyParts);
+                            if (ConfigExports.keepBleedingChanceConsistant) 
+                            {
+                                this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                            }
                         }
                         catch (error) 
                         {
@@ -144,9 +147,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 
                                 );
                             }
-                            this.calcLightBleedingThreshold(this.pmcBodyParts);
-                            this.calcHeavyBleedingThreshold(this.pmcBodyParts);
-                            this.calcFractureThreshold(this.pmcBodyParts);
+                            if (ConfigExports.keepBleedingChanceConsistant) 
+                            {
+                                this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                            }
                         }
                         catch (error) 
                         {
