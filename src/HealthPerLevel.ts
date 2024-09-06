@@ -229,9 +229,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     }
 
-    private calcFractureThreshold() 
+    private calcFractureThreshold(bodyPart: BodyPartsHealth) 
     {
-
+        const fallingFractureThreshold: string = (12 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        const bulletFractureThreshold: string = (18 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        this.logger.warning("🚀 ~ calcFractureThreshold` ~ Number.parseFloat(fallingFractureThreshold): " + Number.parseFloat(fallingFractureThreshold));
+        this.logger.warning("🚀 ~ calcFractureThreshold` ~ Number.parseFloat(bulletFractureThreshold): " + Number.parseFloat(bulletFractureThreshold));
+        this.fracture.FallingProbability.Threshold = Number.parseFloat(fallingFractureThreshold);
+        this.fracture.BulletHitProbability.Threshold = Number.parseFloat(bulletFractureThreshold);
     }
 
     //private isHealthElite(skillType: SkillTypes, pmcProfile: IPmcData): boolean //Supposed to check if health is 'elite' but doesn't work yet
