@@ -3,6 +3,8 @@ export abstract class ConfigExports
     private static config = require("../config/config.json");
 
     public static splitScavAndPmcHealth = this.config.split_scav_and_PMC_health;
+    public static keepBleedingChanceConsistant = this.config.keep_bleeding_chance_consistant;
+    public static increaseThresholdEveryIncrement = this.config.increase_threshold_every_increment;
     public static levelsPerIncrementPmc = this.config.levels_per_increment_PMC;
     public static healthPerHealthSkillLevelPmc = this.config.health_per_health_skill_level_pmc;
     public static healthSkillLevelsPerIncrementPmc = this.config.health_skill_levels_per_increment_PMC;
