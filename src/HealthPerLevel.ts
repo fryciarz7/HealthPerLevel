@@ -222,24 +222,28 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
-    private calcLightBleedingThreshold(bodyPart: BodyPartsHealth) 
+    private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        const bleedingThreshold: string = (21 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        const baseThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
+        const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.logger.warning("🚀 ~ calcLightBleedingThreshold` ~ Number.parseFloat(bleedingThreshold): " + Number.parseFloat(bleedingThreshold));
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth) 
+    private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        const bleedingThreshold: string = (30 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        const baseThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
+        const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.logger.warning("🚀 ~ calcHeavyBleedingThreshold` ~ Number.parseFloat(bleedingThreshold): " + Number.parseFloat(bleedingThreshold));
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcFractureThreshold(bodyPart: BodyPartsHealth) 
+    private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        const fallingFractureThreshold: string = (12 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
-        const bulletFractureThreshold: string = (18 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        const baseFallingThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
+        const baseBulletThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 18 + this.getPmcIncrement(accountLevel) : 18;
+        const fallingFractureThreshold: string = (baseFallingThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
+        const bulletFractureThreshold: string = (baseBulletThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.logger.warning("🚀 ~ calcFractureThreshold` ~ Number.parseFloat(fallingFractureThreshold): " + Number.parseFloat(fallingFractureThreshold));
         this.logger.warning("🚀 ~ calcFractureThreshold` ~ Number.parseFloat(bulletFractureThreshold): " + Number.parseFloat(bulletFractureThreshold));
         this.fracture.FallingProbability.Threshold = Number.parseFloat(fallingFractureThreshold);
