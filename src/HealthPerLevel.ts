@@ -232,7 +232,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         const bleedingThreshold: string = (30 / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.logger.warning("🚀 ~ calcHeavyBleedingThreshold` ~ Number.parseFloat(bleedingThreshold): " + Number.parseFloat(bleedingThreshold));
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
-
     }
 
     private calcFractureThreshold(bodyPart: BodyPartsHealth) 
