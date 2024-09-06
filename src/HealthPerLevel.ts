@@ -10,6 +10,9 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common } from "@spt/models/eft/common/tables/IBotBase";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
+import { ILightBleeding } from "@spt/models/eft/common/IGlobals";
+import { IHeavyBleeding } from "@spt/models/eft/common/IGlobals";
+import { IFracture } from "@spt/models/eft/common/IGlobals";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
@@ -26,6 +29,9 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private pmcProfile: IPmcData;
     private scavProfile: IPmcData;
     private healthElite: boolean;
+    private lightBleeding: ILightBleeding; // Probabilit.Threshold = 35% of HP loss per body part
+    private heavyBleeding: IHeavyBleeding; // Probabilit.Threshold = 50% of HP loss per body part
+    private fracture: IFracture; // Probabilit.Threshold = 20% of HP loss per body part
 
     postDBLoad(container: DependencyContainer): void 
     {
