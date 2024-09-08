@@ -82,32 +82,39 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.scavProfile = pHelp.getScavProfile(sessionID);
                             this.scavHealthSkillLevel = pHelp.getSkillFromProfile(this.scavProfile, SkillTypes.HEALTH);
 
-                            this.calcPMCHealth(
-                                this.pmcBodyParts,
-                                this.pmcLevel,
-                                this.cExports.PMC.baseHealth
-                            );
-                            if (this.isHealthPoolsSplit()) 
+                            if (this.cExports.enabled) 
                             {
-                                this.calcSCAVHealth(
-                                    this.scavBodyParts,
-                                    this.scavLevel,
-                                    this.cExports.SCAV.baseHealth
-                                );
-                            }
-                            else 
-                            {
-                                this.calcSCAVHealth(
-                                    this.scavBodyParts,
+                                this.calcPMCHealth(
+                                    this.pmcBodyParts,
                                     this.pmcLevel,
                                     this.cExports.PMC.baseHealth
                                 );
+                                if (this.isHealthPoolsSplit()) 
+                                {
+                                    this.calcSCAVHealth(
+                                        this.scavBodyParts,
+                                        this.scavLevel,
+                                        this.cExports.SCAV.baseHealth
+                                    );
+                                }
+                                else 
+                                {
+                                    this.calcSCAVHealth(
+                                        this.scavBodyParts,
+                                        this.pmcLevel,
+                                        this.cExports.PMC.baseHealth
+                                    );
+                                }
+                                if (this.cExports.keepBleedingChanceConsistant) 
+                                {
+                                    this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                }
                             }
-                            if (this.cExports.keepBleedingChanceConsistant) 
+                            else 
                             {
-                                this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.restoreDefaultHealth(this.pmcBodyParts, this.scavBodyParts);
                             }
                         }
                         catch (error) 
@@ -131,34 +138,41 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 pHelp.getScavProfile(sessionID).Health.BodyParts;
                             this.scavLevel = pHelp.getScavProfile(sessionID).Info.Level;
 
-                            this.calcPMCHealth(
-                                this.pmcBodyParts,
-                                this.pmcLevel,
-                                this.cExports.PMC.baseHealth
-                            );
-                            if (this.isHealthPoolsSplit()) 
+                            if (this.cExports.enabled) 
                             {
-                                this.calcSCAVHealth(
-                                    this.scavBodyParts,
-                                    this.scavLevel,
-                                    this.cExports.SCAV.baseHealth
-              
-                                ); 
-                            }
-                            else 
-                            { //If split health is FALSE use this
-                                this.calcSCAVHealth(
-                                    this.scavBodyParts,
+                                this.calcPMCHealth(
+                                    this.pmcBodyParts,
                                     this.pmcLevel,
                                     this.cExports.PMC.baseHealth
-                
                                 );
+                                if (this.isHealthPoolsSplit()) 
+                                {
+                                    this.calcSCAVHealth(
+                                        this.scavBodyParts,
+                                        this.scavLevel,
+                                        this.cExports.SCAV.baseHealth
+                  
+                                    ); 
+                                }
+                                else 
+                                { //If split health is FALSE use this
+                                    this.calcSCAVHealth(
+                                        this.scavBodyParts,
+                                        this.pmcLevel,
+                                        this.cExports.PMC.baseHealth
+                    
+                                    );
+                                }
+                                if (this.cExports.keepBleedingChanceConsistant) 
+                                {
+                                    this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                }
                             }
-                            if (this.cExports.keepBleedingChanceConsistant) 
+                            else 
                             {
-                                this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                this.restoreDefaultHealth(this.pmcBodyParts, this.scavBodyParts);
                             }
                         }
                         catch (error) 
