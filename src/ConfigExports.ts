@@ -39,80 +39,80 @@ export class ConfigExports
         this.keepBleedingChanceConsistant = this.config.keep_bleeding_chance_consistant;
         this.increaseThresholdEveryIncrement = this.config.increase_threshold_every_increment;
         
-        this.levelsPerIncrementPmc = this.config.levels_per_increment_PMC;
-        this.healthSkillLevelsPerIncrementPmc = this.config.health_skill_levels_per_increment_PMC;
+        this.levelsPerIncrementPmc = this.config.PMC.levels_per_increment;
+        this.healthSkillLevelsPerIncrementPmc = this.config.PMC.health_skill_levels_per_increment;
 
-        this.healthPerHealthSkillLevelPmc = this.config.health_per_health_skill_level_pmc;
+        this.healthPerHealthSkillLevelPmc = this.config.PMC.health_per_health_skill_level;
 
-        this.levelsPerIncrementScav = this.config.levels_per_increment_SCAV;
-        this.healthSkillLevelsPerIncrementScav = this.config.health_skill_levels_per_increment_SCAV;
+        this.levelsPerIncrementScav = this.config.SCAV.levels_per_increment;
+        this.healthSkillLevelsPerIncrementScav = this.config.SCAV.health_skill_levels_per_increment;
         
-        this.healthPerHealthSkillLevelScav = this.config.health_per_health_skill_level_scav;
+        this.healthPerHealthSkillLevelScav = this.config.SCAV.health_per_health_skill_level;
 
         this.increasePerLevelPMC = {
             //Amount of health that is added per level, broken down per body part from the config.
-            Chest: this.config.increase_per_level_PMC.thorax_health_per_level_PMC,
-            Stomach: this.config.increase_per_level_PMC.stomach_health_per_level_PMC,
-            Head: this.config.increase_per_level_PMC.head_health_per_level_PMC,
-            LeftArm: this.config.increase_per_level_PMC.left_arm_per_level_PMC,
-            LeftLeg: this.config.increase_per_level_PMC.left_leg_per_level_PMC,
-            RightArm: this.config.increase_per_level_PMC.right_arm_per_level_PMC,
-            RightLeg: this.config.increase_per_level_PMC.right_leg_per_level_PMC
+            Chest: this.config.PMC.increase_per_level.thorax_health_per_level,
+            Stomach: this.config.PMC.increase_per_level.stomach_health_per_level,
+            Head: this.config.PMC.increase_per_level.head_health_per_level,
+            LeftArm: this.config.PMC.increase_per_level.left_arm_per_level,
+            LeftLeg: this.config.PMC.increase_per_level.left_leg_per_level,
+            RightArm: this.config.PMC.increase_per_level.right_arm_per_level,
+            RightLeg: this.config.PMC.increase_per_level.right_leg_per_level
         };
     
         this.increasePerHealthSkillLevelPMC = {
             //Amount of health that is added per Health Skill level, broken down per body part from the config.
-            Chest: this.config.increase_per_health_skill_level_PMC.health_skill_thorax_health_per_level_PMC,
-            Stomach: this.config.increase_per_health_skill_level_PMC.health_skill_stomach_health_per_level_PMC,
-            Head: this.config.increase_per_health_skill_level_PMC.health_skill_head_health_per_level_PMC,
-            LeftArm: this.config.increase_per_health_skill_level_PMC.health_skill_left_arm_per_level_PMC,
-            LeftLeg: this.config.increase_per_health_skill_level_PMC.health_skill_left_leg_per_level_PMC,
-            RightArm: this.config.increase_per_health_skill_level_PMC.health_skill_right_arm_per_level_PMC,
-            RightLeg: this.config.increase_per_health_skill_level_PMC.health_skill_right_leg_per_level_PMC
+            Chest: this.config.PMC.increase_per_health_skill_level.health_skill_thorax_health_per_level,
+            Stomach: this.config.PMC.increase_per_health_skill_level.health_skill_stomach_health_per_level,
+            Head: this.config.PMC.increase_per_health_skill_level.health_skill_head_health_per_level,
+            LeftArm: this.config.PMC.increase_per_health_skill_level.health_skill_left_arm_per_level,
+            LeftLeg: this.config.PMC.increase_per_health_skill_level.health_skill_left_leg_per_level,
+            RightArm: this.config.PMC.increase_per_health_skill_level.health_skill_right_arm_per_level,
+            RightLeg: this.config.PMC.increase_per_health_skill_level.health_skill_right_leg_per_level
         };
       
         this.increasePerLevelSCAV = {
             //Amount of health that is added per level, broken down per body part from the config.
-            Chest: this.config.increase_per_level_SCAV.thorax_health_per_level_SCAV,
-            Stomach: this.config.increase_per_level_SCAV.stomach_health_per_level_SCAV,
-            Head: this.config.increase_per_level_SCAV.head_health_per_level_SCAV,
-            LeftArm: this.config.increase_per_level_SCAV.left_arm_per_level_SCAV,
-            LeftLeg: this.config.increase_per_level_SCAV.left_leg_per_level_SCAV,
-            RightArm: this.config.increase_per_level_SCAV.right_arm_per_level_SCAV,
-            RightLeg: this.config.increase_per_level_SCAV.right_leg_per_level_SCAV
+            Chest: this.config.SCAV.increase_per_level.thorax_health_per_level,
+            Stomach: this.config.SCAV.increase_per_level.stomach_health_per_level,
+            Head: this.config.SCAV.increase_per_level.head_health_per_level,
+            LeftArm: this.config.SCAV.increase_per_level.left_arm_per_level,
+            LeftLeg: this.config.SCAV.increase_per_level.left_leg_per_level,
+            RightArm: this.config.SCAV.increase_per_level.right_arm_per_level,
+            RightLeg: this.config.SCAV.increase_per_level.right_leg_per_level
         };
       
         this.increasePerHealthSkillLevelSCAV = {
             //Amount of health that is added per Health Skill level, broken down per body part from the config.
-            Chest: this.config.increase_per_health_skill_level_SCAV.health_skill_thorax_health_per_level_SCAV,
-            Stomach: this.config.increase_per_health_skill_level_SCAV.health_skill_stomach_health_per_level_SCAV,
-            Head: this.config.increase_per_health_skill_level_SCAV.health_skill_head_health_per_level_SCAV,
-            LeftArm: this.config.increase_per_health_skill_level_SCAV.health_skill_left_arm_per_level_SCAV,
-            LeftLeg: this.config.increase_per_health_skill_level_SCAV.health_skill_left_leg_per_level_SCAV,
-            RightArm: this.config.increase_per_health_skill_level_SCAV.health_skill_right_arm_per_level_SCAV,
-            RightLeg: this.config.increase_per_health_skill_level_SCAV.health_skill_right_leg_per_level_SCAV
+            Chest: this.config.SCAV.increase_per_health_skill_level.health_skill_thorax_health_per_level,
+            Stomach: this.config.SCAV.increase_per_health_skill_level.health_skill_stomach_health_per_level,
+            Head: this.config.SCAV.increase_per_health_skill_level.health_skill_head_health_per_level,
+            LeftArm: this.config.SCAV.increase_per_health_skill_level.health_skill_left_arm_per_level,
+            LeftLeg: this.config.SCAV.increase_per_health_skill_level.health_skill_left_leg_per_level,
+            RightArm: this.config.SCAV.increase_per_health_skill_level.health_skill_right_arm_per_level,
+            RightLeg: this.config.SCAV.increase_per_health_skill_level.health_skill_right_leg_per_level
         };
         
         this.baseHealthPMC = {
             //Amount of base health per body part, based on the config.
-            Chest: this.config.base_health_PMC.thorax_base_health_PMC,
-            Stomach: this.config.base_health_PMC.stomach_base_health_PMC,
-            Head: this.config.base_health_PMC.head_base_health_PMC,
-            LeftArm: this.config.base_health_PMC.left_arm_base_health_PMC,
-            LeftLeg: this.config.base_health_PMC.left_leg_base_health_PMC,
-            RightArm: this.config.base_health_PMC.right_arm_base_health_PMC,
-            RightLeg: this.config.base_health_PMC.right_leg_base_health_PMC
+            Chest: this.config.PMC.base_health.thorax_base_health,
+            Stomach: this.config.PMC.base_health.stomach_base_health,
+            Head: this.config.PMC.base_health.head_base_health,
+            LeftArm: this.config.PMC.base_health.left_arm_base_health,
+            LeftLeg: this.config.PMC.base_health.left_leg_base_health,
+            RightArm: this.config.PMC.base_health.right_arm_base_health,
+            RightLeg: this.config.PMC.base_health.right_leg_base_health
         };
     
         this.baseHealthSCAV = {
             //Amount of base health per body part, based on the config.
-            Chest: this.config.base_health_SCAV.thorax_base_health_SCAV,
-            Stomach: this.config.base_health_SCAV.stomach_base_health_SCAV,
-            Head: this.config.base_health_SCAV.head_base_health_SCAV,
-            LeftArm: this.config.base_health_SCAV.left_arm_base_health_SCAV,
-            LeftLeg: this.config.base_health_SCAV.left_leg_base_health_SCAV,
-            RightArm: this.config.base_health_SCAV.right_arm_base_health_SCAV,
-            RightLeg: this.config.base_health_SCAV.right_leg_base_health_SCAV
+            Chest: this.config.SCAV.base_health.thorax_base_health,
+            Stomach: this.config.SCAV.base_health.stomach_base_health,
+            Head: this.config.SCAV.base_health.head_base_health,
+            LeftArm: this.config.SCAV.base_health.left_arm_base_health,
+            LeftLeg: this.config.SCAV.base_health.left_leg_base_health,
+            RightArm: this.config.SCAV.base_health.right_arm_base_health,
+            RightLeg: this.config.SCAV.base_health.right_leg_base_health
         };
     }
 }
