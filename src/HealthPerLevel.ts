@@ -243,13 +243,31 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
     
-    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth, baseHealth: { [key: string]: number; }) 
+    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth) 
     {
+        this.logger.warning(this.logPrefix + "Mod disabled, restoring default health pools for PMC and Scav...");
+        const defaultHealthPools: { [key: string ]: number } =
+        {
+            Chest: 85,
+            Stomach: 70,
+            Head: 35,
+            LeftArm: 60,
+            LeftLeg: 65,
+            RightArm: 60,
+            RightLeg: 65
+        }
         for (const key in this.cExports.PMC.increasePerLevel)
         {
-            pmcBodyParts[key].Health.Maximum = baseHealth[key];
-            scavBodyParts[key].Health.Maximum = baseHealth[key];
+            pmcBodyParts[key].Health.Maximum = defaultHealthPools[key];
+            pmcBodyParts[key].Health.Current = pmcBodyParts[key].Health.Maximum
+
+            scavBodyParts[key].Health.Maximum = defaultHealthPools[key];
+            scavBodyParts[key].Health.Current = scavBodyParts[key].Health.Maximum
         }
+        this.logger.warning(this.logPrefix + "Restoring bleeding and fractures Thresholds...");
+        this.calcLightBleedingThreshold(pmcBodyParts, 0);
+        this.calcHeavyBleedingThreshold(pmcBodyParts, 0);
+        this.calcFractureThreshold(pmcBodyParts, 0);
     }
 
     private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
