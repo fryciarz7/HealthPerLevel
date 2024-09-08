@@ -1,4 +1,6 @@
 {
+    enabled: true,
+    
     // ---If this is false just use the _PMC values for both scav and PMC---
     split_scav_and_PMC_health : false, 
 
