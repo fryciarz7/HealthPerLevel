@@ -228,6 +228,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             }
         }
     }
+    
+    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth, baseHealth: { [key: string]: number; }) 
+    {
+        for (const key in this.cExports.PMC.increasePerLevel)
+        {
+            pmcBodyParts[key].Health.Maximum = baseHealth[key];
+            scavBodyParts[key].Health.Maximum = baseHealth[key];
+        }
+    }
 
     private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
