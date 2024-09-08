@@ -36,6 +36,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private cExports: IHealthPerLevelConfig;
 
+    private logPrefix: string = "[HealthPerLevel] ";
+
     postDBLoad(container: DependencyContainer): void 
     {
         const dbServer = container
@@ -55,7 +57,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         );
         const pHelp = container.resolve<ProfileHelper>("ProfileHelper");
         this.logger = container.resolve<ILogger>("WinstonLogger");
-        this.logger.info("[HealthPerLevel] Loading HealthPerLevel...");
+        this.logger.info(this.logPrefix + "Loading HealthPerLevel...");
         const cHelper = new ConfigExports(container);
         this.cExports = cHelper.getConfig();
         
@@ -110,7 +112,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                         }
                         catch (error) 
                         {
-                            this.logger.error("[HealthPerLevel] " + error.message);
+                            this.logger.error(this.logPrefix + error.message);
                         }
                         return output;
                     }
@@ -161,7 +163,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                         }
                         catch (error) 
                         {
-                            this.logger.error("[HealthPerLevel] " + error.message);
+                            this.logger.error(this.logPrefix + error.message);
                         }
                         return output;
                     }
@@ -187,7 +189,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             }
             if (bodyPart[key].Health.Current > bodyPart[key].Health.Maximum)
             {
-                this.logger.warning("[HealthPerLevel] How is your health higher than maximum, again? I mean your " + key + " is something else.");
+                this.logger.warning(this.logPrefix + "How is your health higher than maximum, again? I mean your " + key + " is something else.");
                 bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
@@ -238,7 +240,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning("[HealthPerLevel] Calculating Light Bleeding Threshold...");
+        this.logger.warning(this.logPrefix + "Calculating Light Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
@@ -246,7 +248,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning("[HealthPerLevel] Calculating Heavy Bleeding Threshold...");
+        this.logger.warning(this.logPrefix + "Calculating Heavy Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
@@ -254,7 +256,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning("[HealthPerLevel] Calculating Fractures Threshold...");
+        this.logger.warning(this.logPrefix + "Calculating Fractures Threshold...");
         const baseFallingThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
         const baseBulletThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 18 + this.getPmcIncrement(accountLevel) : 18;
         const fallingFractureThreshold: string = (baseFallingThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
@@ -266,14 +268,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     //private isHealthElite(skillType: SkillTypes, pmcProfile: IPmcData): boolean //Supposed to check if health is 'elite' but doesn't work yet
     private isHealthElite(): boolean //Supposed to check if health is 'elite' but doesn't work yet
     {
-        this.logger.warning("[HealthPerLevel] Health skill level: " + this.pmcHealthSkillLevel.Progress);
+        this.logger.warning(this.logPrefix + "Health skill level: " + this.pmcHealthSkillLevel.Progress);
         if (this.pmcHealthSkillLevel.Progress < 5100)
         {
-            this.logger.warning("[HealthPerLevel] " + "Health found, but not elite");
+            this.logger.warning(this.logPrefix + "Health found, but not elite");
             return false;
         }
         else 
-            this.logger.warning("[HealthPerLevel] " + "Health is elite");
+            this.logger.warning(this.logPrefix + "Health is elite");
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
     }
 
