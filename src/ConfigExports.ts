@@ -5,6 +5,7 @@ import json5 from "json5";
 
 export interface IHealthPerLevelConfig
 {
+    enabled: boolean,
     splitScavAndPmcHealth: boolean;
     keepBleedingChanceConsistant:boolean;
     increaseThresholdEveryIncrement: boolean;
@@ -46,6 +47,7 @@ export class ConfigExports
     private mapConfig()
     {
         return { 
+            enabled: this.configJson.enabled,
             splitScavAndPmcHealth: this.configJson.split_scav_and_PMC_health,
             keepBleedingChanceConsistant: this.configJson.keep_bleeding_chance_consistant,
             increaseThresholdEveryIncrement: this.configJson.increase_threshold_every_increment,
