@@ -58,8 +58,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.logger.info("[HealthPerLevel] Loading HealthPerLevel...");
         const cHelper = new ConfigExports(container);
         this.cExports = cHelper.getConfig();
-        this.logger.warning("[HealthPerLevel] this.cExports.config.splitScavAndPmcHealth " + this.cExports.splitScavAndPmcHealth);
-        this.logger.warning("[HealthPerLevel] this.cExports.config.PMC.levelsPerIncrement " + this.cExports.PMC.levelsPerIncrement);
         
         staticRMS.registerStaticRouter(
             "HealthPerLevel",
