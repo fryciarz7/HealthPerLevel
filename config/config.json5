@@ -89,3 +89,4 @@
     health_skill_left_leg_per_level_SCAV: 1,
     health_skill_right_leg_per_level_SCAV: 1,
     // ---End of SCAV Health per Health Skill level values---
+}
