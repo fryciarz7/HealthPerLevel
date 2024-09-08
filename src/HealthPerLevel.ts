@@ -33,6 +33,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private heavyBleeding: IHeavyBleeding; // Probabilit.Threshold = 50% of HP loss per body part
     private fracture: IFracture; // Probabilit.Threshold = 20% or 30% of HP loss per body part
 
+    private cExports: any;
+
     postDBLoad(container: DependencyContainer): void 
     {
         const dbServer = container
@@ -53,6 +55,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         const pHelp = container.resolve<ProfileHelper>("ProfileHelper");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.logger.info("[HealthPerLevel] Loading HealthPerLevel...");
+        this.cExports = new ConfigExports(container);
         
         staticRMS.registerStaticRouter(
             "HealthPerLevel",
@@ -78,14 +81,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.calcPMCHealth(
                                 this.pmcBodyParts,
                                 this.pmcLevel,
-                                ConfigExports.baseHealthPMC
+                                this.cExports.baseHealthPMC
                             );
                             if (this.isHealthPoolsSplit()) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
                                     this.scavLevel,
-                                    ConfigExports.baseHealthSCAV
+                                    this.cExports.baseHealthSCAV
                                 );
                             }
                             else 
@@ -93,10 +96,10 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
                                     this.pmcLevel,
-                                    ConfigExports.baseHealthPMC
+                                    this.cExports.baseHealthPMC
                                 );
                             }
-                            if (ConfigExports.keepBleedingChanceConsistant) 
+                            if (this.cExports.keepBleedingChanceConsistant) 
                             {
                                 this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
                                 this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
@@ -127,14 +130,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.calcPMCHealth(
                                 this.pmcBodyParts,
                                 this.pmcLevel,
-                                ConfigExports.baseHealthPMC
+                                this.cExports.baseHealthPMC
                             );
                             if (this.isHealthPoolsSplit()) 
                             {
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
                                     this.scavLevel,
-                                    ConfigExports.baseHealthSCAV
+                                    this.cExports.baseHealthSCAV
               
                                 ); 
                             }
@@ -143,11 +146,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 this.calcSCAVHealth(
                                     this.scavBodyParts,
                                     this.pmcLevel,
-                                    ConfigExports.baseHealthPMC
+                                    this.cExports.baseHealthPMC
                 
                                 );
                             }
-                            if (ConfigExports.keepBleedingChanceConsistant) 
+                            if (this.cExports.keepBleedingChanceConsistant) 
                             {
                                 this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
                                 this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
@@ -172,13 +175,13 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        for (const key in ConfigExports.increasePerLevelPMC) 
+        for (const key in this.cExports.increasePerLevelPMC) 
         {
             bodyPart[key].Health.Maximum =
-            preset[key] + (this.getPmcIncrement(accountLevel)) * ConfigExports.increasePerLevelPMC[key];
-            if (ConfigExports.healthPerHealthSkillLevelPmc == true && this.pmcHealthSkillLevel)
+            preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.increasePerLevelPMC[key];
+            if (this.cExports.healthPerHealthSkillLevelPmc == true && this.pmcHealthSkillLevel)
             {
-                bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementPmc) * ConfigExports.increasePerHealthSkillLevelPMC[key];
+                bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.cExports.healthSkillLevelsPerIncrementPmc) * this.cExports.increasePerHealthSkillLevelPMC[key];
             }
             if (bodyPart[key].Health.Current > bodyPart[key].Health.Maximum)
             {
@@ -196,26 +199,26 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     {
         if (this.isHealthPoolsSplit()) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
-            for (const key in ConfigExports.increasePerLevelSCAV) 
+            for (const key in this.cExports.increasePerLevelSCAV) 
             {
                 bodyPart[key].Health.Maximum =
-            preset[key] + (this.getScavIncrement(accountLevel)) * ConfigExports.increasePerLevelSCAV[key];
-                if (ConfigExports.healthPerHealthSkillLevelScav == true)
+            preset[key] + (this.getScavIncrement(accountLevel)) * this.cExports.increasePerLevelSCAV[key];
+                if (this.cExports.healthPerHealthSkillLevelScav == true)
                 {
-                    bodyPart[key].Health.Maximum += Math.floor(this.scavHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementScav) * ConfigExports.increasePerHealthSkillLevelSCAV[key];
+                    bodyPart[key].Health.Maximum += Math.floor(this.scavHealthSkillLevel.Progress / 100 / this.cExports.healthSkillLevelsPerIncrementScav) * this.cExports.increasePerHealthSkillLevelSCAV[key];
                 }
                 bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
         else 
         {
-            for (const key in ConfigExports.increasePerLevelPMC) 
+            for (const key in this.cExports.increasePerLevelPMC) 
             {
                 bodyPart[key].Health.Maximum =
-            preset[key] + (this.getPmcIncrement(accountLevel)) * ConfigExports.increasePerLevelPMC[key];
-                if (ConfigExports.healthPerHealthSkillLevelPmc == true)
+            preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.increasePerLevelPMC[key];
+                if (this.cExports.healthPerHealthSkillLevelPmc == true)
                 {
-                    bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / ConfigExports.healthSkillLevelsPerIncrementPmc) * ConfigExports.increasePerHealthSkillLevelPMC[key];
+                    bodyPart[key].Health.Maximum += Math.floor(this.pmcHealthSkillLevel.Progress / 100 / this.cExports.healthSkillLevelsPerIncrementPmc) * this.cExports.increasePerHealthSkillLevelPMC[key];
                 }
                 bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
@@ -225,7 +228,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
         this.logger.warning("[HealthPerLevel] Calculating Light Bleeding Threshold...");
-        const baseThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
+        const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
@@ -233,7 +236,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
         this.logger.warning("[HealthPerLevel] Calculating Heavy Bleeding Threshold...");
-        const baseThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
+        const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
@@ -241,8 +244,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
         this.logger.warning("[HealthPerLevel] Calculating Fractures Threshold...");
-        const baseFallingThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
-        const baseBulletThresholdValue: number = ConfigExports.increaseThresholdEveryIncrement ? 18 + this.getPmcIncrement(accountLevel) : 18;
+        const baseFallingThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
+        const baseBulletThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 18 + this.getPmcIncrement(accountLevel) : 18;
         const fallingFractureThreshold: string = (baseFallingThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         const bulletFractureThreshold: string = (baseBulletThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.fracture.FallingProbability.Threshold = Number.parseFloat(fallingFractureThreshold);
@@ -272,17 +275,17 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private isHealthPoolsSplit() 
     {
-        return ConfigExports.splitScavAndPmcHealth == true;
+        return this.cExports.splitScavAndPmcHealth == true;
     }
 
     private getPmcIncrement(accountLevel: number) 
     {
-        return Math.trunc((accountLevel - 1) / ConfigExports.levelsPerIncrementPmc);
+        return Math.trunc((accountLevel - 1) / this.cExports.levelsPerIncrementPmc);
     }
 
     private getScavIncrement(accountLevel: number) 
     {
-        return Math.trunc((accountLevel - 1) / ConfigExports.levelsPerIncrementScav);
+        return Math.trunc((accountLevel - 1) / this.cExports.levelsPerIncrementScav);
     }
 }
 
