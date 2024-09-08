@@ -10,19 +10,20 @@ export class ConfigExports
     public splitScavAndPmcHealth: boolean;
     public keepBleedingChanceConsistant:boolean;
     public increaseThresholdEveryIncrement: boolean;
-    public healthPerHealthSkillLevelPmc:boolean;
-    public healthPerHealthSkillLevelScav:boolean;
+    
     public levelsPerIncrementPmc:number;
     public healthSkillLevelsPerIncrementPmc:number;
+    public healthPerHealthSkillLevelPmc:boolean;
+    public baseHealthPMC: { [key: string]: number } = {};
+    public increasePerLevelPMC: { [key: string]: number } = {};
+    public increasePerHealthSkillLevelPMC: { [key: string]: number } = {};
+    
     public levelsPerIncrementScav:number;
     public healthSkillLevelsPerIncrementScav:number;
-
-    public increasePerLevelPMC: { [key: string]: number } = {};
-    public increasePerHealthSkillLevelPMC: { [key: string]: number } = {}  
+    public healthPerHealthSkillLevelScav:boolean;
+    public baseHealthSCAV: { [key: string]: number } = {};
     public increasePerLevelSCAV: { [key: string]: number } = {};  
     public increasePerHealthSkillLevelSCAV: { [key: string]: number } = {};    
-    public baseHealthPMC: { [key: string]: number } = {};
-    public baseHealthSCAV: { [key: string]: number } = {};
 
     constructor(container: DependencyContainer)
     {
