@@ -36,7 +36,6 @@ export class ConfigExports
     {
         const vfs = container.resolve<VFS>("VFS");
         this.configJson = json5.parse(vfs.readFile(path.resolve(__dirname, "../config/config.json5")));        
-        this.mapConfig();
     }
 
     public getConfig(): IHealthPerLevelConfig
