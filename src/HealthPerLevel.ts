@@ -76,8 +76,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.pmcHealthSkillLevel = pHelp.getSkillFromProfile(this.pmcProfile, SkillTypes.HEALTH);
                             this.healthElite = this.isHealthElite();
 
-                            this.scavBodyParts =
-                pHelp.getScavProfile(sessionID).Health.BodyParts;
+                            this.scavBodyParts = pHelp.getScavProfile(sessionID).Health.BodyParts;
                             this.scavLevel = pHelp.getScavProfile(sessionID).Info.Level;
                             this.scavProfile = pHelp.getScavProfile(sessionID);
                             this.scavHealthSkillLevel = pHelp.getSkillFromProfile(this.scavProfile, SkillTypes.HEALTH);
@@ -130,12 +129,10 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                     {
                         try 
                         {
-                            this.pmcBodyParts =
-                pHelp.getPmcProfile(sessionID).Health.BodyParts;
+                            this.pmcBodyParts = pHelp.getPmcProfile(sessionID).Health.BodyParts;
                             this.pmcLevel = pHelp.getPmcProfile(sessionID).Info.Level;
 
-                            this.scavBodyParts =
-                pHelp.getScavProfile(sessionID).Health.BodyParts;
+                            this.scavBodyParts = pHelp.getScavProfile(sessionID).Health.BodyParts;
                             this.scavLevel = pHelp.getScavProfile(sessionID).Info.Level;
 
                             if (this.cExports.enabled) 
