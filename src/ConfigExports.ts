@@ -30,7 +30,6 @@ export interface IHealthPerLevelConfig
 export class ConfigExports 
 {
     private configJson: any;
-    public config: IHealthPerLevelConfig;   
 
     constructor(container: DependencyContainer)
     {
