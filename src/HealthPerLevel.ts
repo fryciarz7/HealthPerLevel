@@ -16,6 +16,8 @@ import { IFracture } from "@spt/models/eft/common/IGlobals";
 import { ConfigExports } from "./ConfigExports";
 import { IHealthPerLevelConfig } from "./ConfigExports";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
+import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
+import { LogBackgroundColor } from "@spt/models/spt/logging/LogBackgroundColor";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
@@ -187,7 +189,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     postSptLoad(container: DependencyContainer): void
     {
-        
+        const presptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
+        if (presptModLoader.getImportedModsNames().includes("SPT-Realism"))
+        {
+            this.logger = container.resolve<ILogger>("WinstonLogger");
+            this.logger.logWithColor(this.logPrefix + "REALISM detected, remember to DISABLE Health changes if you want HealthPerLevel to work!", LogTextColor.YELLOW, LogBackgroundColor.RED);
+        }
     }
 
     private calcPMCHealth(
