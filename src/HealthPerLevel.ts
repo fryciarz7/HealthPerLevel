@@ -15,6 +15,7 @@ import { IHeavyBleeding } from "@spt/models/eft/common/IGlobals";
 import { IFracture } from "@spt/models/eft/common/IGlobals";
 import { ConfigExports } from "./ConfigExports";
 import { IHealthPerLevelConfig } from "./ConfigExports";
+import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
@@ -182,6 +183,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             ],
             "aki"
         );
+    }
+
+    postSptLoad(container: DependencyContainer): void
+    {
+        
     }
 
     private calcPMCHealth(
