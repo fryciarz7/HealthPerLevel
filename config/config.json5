@@ -16,7 +16,7 @@
         level_cap_value: 30,
         health_skill_levels_per_increment: 1,
         level_health_skill_cap: false,
-        level_health_skill_cap_value: 30,
+        level_health_skill_cap_value: 25,
 
         // The following lines are for changing the base health values for the playerPMC, the default values are for default EFT
         base_health: 
@@ -62,7 +62,7 @@
         level_cap_value: 30,
         health_skill_levels_per_increment: 1,
         level_health_skill_cap: false,
-        level_health_skill_cap_value: 30,
+        level_health_skill_cap_value: 25,
 
         // The following lines are for changing the base health values for the playerscav, the default values are for default EFT
         base_health: 
