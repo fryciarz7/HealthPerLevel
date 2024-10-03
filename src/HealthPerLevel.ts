@@ -18,6 +18,7 @@ import { IHealthPerLevelConfig } from "./ConfigExports";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import { LogBackgroundColor } from "@spt/models/spt/logging/LogBackgroundColor";
+import { BotController } from "@spt/controllers/BotController";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
@@ -36,6 +37,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private lightBleeding: ILightBleeding; // Probabilit.Threshold = 35% of HP loss per body part
     private heavyBleeding: IHeavyBleeding; // Probabilit.Threshold = 50% of HP loss per body part
     private fracture: IFracture; // Probabilit.Threshold = 20% or 30% of HP loss per body part
+    private botController: BotController;
 
     private cExports: IHealthPerLevelConfig;
 
@@ -51,6 +53,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.lightBleeding = dbServer.config.Health.Effects.LightBleeding;
         this.heavyBleeding = dbServer.config.Health.Effects.HeavyBleeding;
         this.fracture = dbServer.config.Health.Effects.Fracture;
+        this.botController = container.resolve<BotController>("BotController");
     }
 
     preSptLoad(container: DependencyContainer): void 
@@ -191,9 +194,25 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                         }
                         return output;
                     }
+                },
+                {
+                    url: "/client/game/bot/generate",
+                    action: (url: any, info: any, sessionID: any, output: any) => 
+                    {
+                        try 
+                        {
+                            //
+                            console.log("🚀 ~ output:", output);
+                        } 
+                        catch (error) 
+                        {
+                            console.log(this.logPrefix + "error:", error);
+                            
+                        }
+                    }
                 }
             ],
-            "aki"
+            "spt"
         );
     }
 
@@ -407,10 +426,32 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
     }
 
-    private changeBotHealth  () : void
+    private changeBotHealth  (container: DependencyContainer) : void
     {
         //  /client/game/bot/generate
         //This area does nothing currently but eventually bots will also increase per their level.
+        
+        // const staticRMS = container.resolve<StaticRouterModService>(
+        //     "StaticRouterModService"
+        // );
+        // staticRMS.registerStaticRouter("HealthPerLevelBots",
+        //     [{
+        //         url: "/client/game/bot/generate",
+        //         action: (url: any, info: any, sessionID: any, output: any) => 
+        //         {
+        //             try 
+        //             {
+        //                 //
+        //             } 
+        //             catch (error) 
+        //             {
+        //                 console.log(this.logPrefix + "error:", error);
+                        
+        //             }
+        //         }
+        //     }],
+        //     "spt"
+        // );
 
     }
 
