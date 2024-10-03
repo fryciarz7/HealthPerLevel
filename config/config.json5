@@ -11,8 +11,12 @@
     PMC: 
     {
         // How many levels does the playerPMC have to level up by before the code changes their health values
-        levels_per_increment : 5,
+        levels_per_increment: 5,
+        level_cap: false,
+        level_cap_value: 30,
         health_skill_levels_per_increment: 1,
+        level_health_skill_cap: false,
+        level_health_skill_cap_value: 30,
 
         // The following lines are for changing the base health values for the playerPMC, the default values are for default EFT
         base_health: 
@@ -53,8 +57,12 @@
     SCAV:
     {
         // How many levels does the playerscav have to level up by before the code changes their health values
-        levels_per_increment : 5,
+        levels_per_increment: 5,
+        level_cap: false,
+        level_cap_value: 30,
         health_skill_levels_per_increment: 1,
+        level_health_skill_cap: false,
+        level_health_skill_cap_value: 30,
 
         // The following lines are for changing the base health values for the playerscav, the default values are for default EFT
         base_health: 
