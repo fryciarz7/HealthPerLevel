@@ -88,6 +88,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             {
                                 this.checkLevelCap(true);
                                 this.checkLevelCap(false);
+                                this.checkHealthSkillLevelCap(true);
+                                this.checkHealthSkillLevelCap(false);
                                 this.calcPMCHealth(
                                     this.pmcBodyParts,
                                     this.pmcLevel,
@@ -146,6 +148,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             {
                                 this.checkLevelCap(true);
                                 this.checkLevelCap(false);
+                                this.checkHealthSkillLevelCap(true);
+                                this.checkHealthSkillLevelCap(false);
                                 this.calcPMCHealth(
                                     this.pmcBodyParts,
                                     this.pmcLevel,
@@ -229,6 +233,33 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             console.log("🚀 ~ file: HealthPerLevel.ts:229 ~ this.pmcLevel:", this.pmcLevel);
             this.pmcLevel = this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
             console.log("🚀 ~ file: HealthPerLevel.ts:231 ~ pmcLevel:", this.pmcLevel);
+        }
+    }
+    
+    checkHealthSkillLevelCap(isPmc: boolean) 
+    {
+        if (this.isHealthPoolsSplit())
+        {
+            if (isPmc)
+            {
+                this.checkPmcHealthSkillLevelCap();
+            }
+            else if (this.cExports.SCAV.levelHealthSkillCap)
+            {
+                this.scavHealthSkillLevel.Progress = this.scavHealthSkillLevel.Progress > (this.cExports.SCAV.levelHealthSkillCapValue * 100) ? (this.cExports.SCAV.levelHealthSkillCapValue * 100) : this.scavHealthSkillLevel.Progress;
+            }
+        }
+        else
+        {
+            this.checkPmcHealthSkillLevelCap();
+        }       
+    }
+
+    checkPmcHealthSkillLevelCap()
+    {
+        if (this.cExports.PMC.levelHealthSkillCap) 
+        {
+            this.pmcHealthSkillLevel.Progress = this.pmcHealthSkillLevel.Progress > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : this.pmcHealthSkillLevel.Progress;
         }
     }
 
