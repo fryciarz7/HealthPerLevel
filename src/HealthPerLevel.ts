@@ -86,6 +86,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
                             if (this.cExports.enabled) 
                             {
+                                this.checkLevelCap(true);
+                                this.checkLevelCap(false);
                                 this.calcPMCHealth(
                                     this.pmcBodyParts,
                                     this.pmcLevel,
@@ -135,11 +137,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.pmcBodyParts = pHelp.getPmcProfile(sessionID).Health.BodyParts;
                             this.pmcLevel = pHelp.getPmcProfile(sessionID).Info.Level;
 
+
                             this.scavBodyParts = pHelp.getScavProfile(sessionID).Health.BodyParts;
                             this.scavLevel = pHelp.getScavProfile(sessionID).Info.Level;
 
+
                             if (this.cExports.enabled) 
                             {
+                                this.checkLevelCap(true);
+                                this.checkLevelCap(false);
                                 this.calcPMCHealth(
                                     this.pmcBodyParts,
                                     this.pmcLevel,
@@ -197,12 +203,42 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
+    checkLevelCap(isPmc: boolean) 
+    {
+        if (this.isHealthPoolsSplit())
+        {
+            if (isPmc)
+            {
+                this.checkPmcLevelCap();
+            }
+            else if (this.cExports.SCAV.levelCap) //ckeckScavLevelCap
+            {
+                this.scavLevel = this.scavLevel > this.cExports.SCAV.levelCapValue ? this.cExports.SCAV.levelCapValue : this.scavLevel;
+            }
+        } 
+        else
+        {
+            this.checkPmcLevelCap();
+        }
+    }
+
+    checkPmcLevelCap() 
+    {
+        if (this.cExports.PMC.levelCap) 
+        {
+            console.log("🚀 ~ file: HealthPerLevel.ts:229 ~ this.pmcLevel:", this.pmcLevel);
+            this.pmcLevel = this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
+            console.log("🚀 ~ file: HealthPerLevel.ts:231 ~ pmcLevel:", this.pmcLevel);
+        }
+    }
+
     private calcPMCHealth(
         bodyPart: BodyPartsHealth,
         accountLevel: number,
         preset
     ) 
     {
+        console.log("🚀 ~ file: HealthPerLevel.ts:240 ~ calcPMCHealth ~ accountLevel:", accountLevel);
         for (const key in this.cExports.PMC.increasePerLevel) 
         {
             bodyPart[key].Health.Maximum =
@@ -225,6 +261,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
+        console.log("🚀 ~ file: HealthPerLevel.ts:240 ~ calcSCAVHealth ~ accountLevel:", accountLevel);
         if (this.isHealthPoolsSplit()) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
             for (const key in this.cExports.SCAV.increasePerLevel) 
