@@ -350,7 +350,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning(this.logPrefix + "Calculating Light Bleeding Threshold...");
+        this.logger.info(this.logPrefix + "Calculating Light Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
@@ -358,7 +358,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning(this.logPrefix + "Calculating Heavy Bleeding Threshold...");
+        this.logger.info(this.logPrefix + "Calculating Heavy Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
         const bleedingThreshold: string = (baseThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
@@ -366,7 +366,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
     {
-        this.logger.warning(this.logPrefix + "Calculating Fractures Threshold...");
+        this.logger.info(this.logPrefix + "Calculating Fractures Threshold...");
         const baseFallingThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
         const baseBulletThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 18 + this.getPmcIncrement(accountLevel) : 18;
         const fallingFractureThreshold: string = (baseFallingThresholdValue / bodyPart.LeftArm.Health.Maximum).toFixed(3);
@@ -378,14 +378,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     //private isHealthElite(skillType: SkillTypes, pmcProfile: IPmcData): boolean //Supposed to check if health is 'elite' but doesn't work yet
     private isHealthElite(): boolean //Supposed to check if health is 'elite' but doesn't work yet
     {
-        this.logger.warning(this.logPrefix + "Health skill level: " + this.pmcHealthSkillLevel.Progress);
+        this.logger.info(this.logPrefix + "Health skill level: " + this.pmcHealthSkillLevel.Progress);
         if (this.pmcHealthSkillLevel.Progress < 5100)
         {
-            this.logger.warning(this.logPrefix + "Health found, but not elite");
+            this.logger.info(this.logPrefix + "Health found, but not elite");
             return false;
         }
         else 
-            this.logger.warning(this.logPrefix + "Health is elite");
+            this.logger.info(this.logPrefix + "Health is elite");
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
     }
 
