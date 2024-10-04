@@ -234,9 +234,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     {
         if (this.cExports.PMC.levelCap) 
         {
-            console.log("🚀 ~ file: HealthPerLevel.ts:229 ~ this.pmcLevel:", this.pmcLevel);
             return this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
-            console.log("🚀 ~ file: HealthPerLevel.ts:231 ~ pmcLevel:", this.pmcLevel);
         }
         else
         {
