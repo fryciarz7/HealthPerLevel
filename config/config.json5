@@ -8,6 +8,8 @@
     keep_bleeding_chance_consistant: true,
     increase_threshold_every_increment: true,
 
+    show_realism_warning: true,
+
     PMC: 
     {
         // How many levels does the playerPMC have to level up by before the code changes their health values

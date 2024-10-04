@@ -9,6 +9,7 @@ export interface IHealthPerLevelConfig
     splitScavAndPmcHealth: boolean;
     keepBleedingChanceConsistant:boolean;
     increaseThresholdEveryIncrement: boolean;
+    showRealismWarning: boolean;
     PMC: {
         levelsPerIncrement:number;
         healthSkillLevelsPerIncrement:number;
@@ -49,6 +50,7 @@ export class ConfigExports
             splitScavAndPmcHealth: this.configJson.split_scav_and_PMC_health,
             keepBleedingChanceConsistant: this.configJson.keep_bleeding_chance_consistant,
             increaseThresholdEveryIncrement: this.configJson.increase_threshold_every_increment,
+            showRealismWarning: this.configJson.show_realism_warning,
             PMC:
             {
                 levelsPerIncrement: this.configJson.PMC.levels_per_increment,
