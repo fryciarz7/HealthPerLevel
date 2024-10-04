@@ -2,6 +2,7 @@ import path from "node:path";
 import { DependencyContainer } from "tsyringe";
 import { VFS } from "@spt/utils/VFS";
 import json5 from "json5";
+import { eventNames } from "node:process";
 
 export interface IHealthPerLevelConfig
 {
@@ -12,7 +13,11 @@ export interface IHealthPerLevelConfig
     showRealismWarning: boolean;
     PMC: {
         levelsPerIncrement:number;
+        levelCap:boolean;
+        levelCapValue:number;
         healthSkillLevelsPerIncrement:number;
+        levelHealthSkillCap:boolean;
+        levelHealthSkillCapValue:number;
         healthPerHealthSkillLevel:boolean;
         baseHealth: { [key: string]: number };
         increasePerLevel: { [key: string]: number };
@@ -20,7 +25,11 @@ export interface IHealthPerLevelConfig
     }
     SCAV: {
         levelsPerIncrement:number;
+        levelCap:boolean;
+        levelCapValue:number;
         healthSkillLevelsPerIncrement:number;
+        levelHealthSkillCap:boolean;
+        levelHealthSkillCapValue:number;
         healthPerHealthSkillLevel:boolean;
         baseHealth: { [key: string]: number };
         increasePerLevel: { [key: string]: number };
@@ -54,7 +63,11 @@ export class ConfigExports
             PMC:
             {
                 levelsPerIncrement: this.configJson.PMC.levels_per_increment,
+                levelCap: this.configJson.PMC.level_cap,
+                levelCapValue: this.configJson.PMC.level_cap_value,
                 healthSkillLevelsPerIncrement: this.configJson.PMC.health_skill_levels_per_increment,
+                levelHealthSkillCap: this.configJson.PMC.level_health_skill_cap,
+                levelHealthSkillCapValue: this.configJson.PMC.level_health_skill_cap_value,
                 healthPerHealthSkillLevel: this.configJson.PMC.health_per_health_skill_level,
                 baseHealth:
                 {
@@ -93,7 +106,11 @@ export class ConfigExports
             SCAV:
             {
                 levelsPerIncrement: this.configJson.SCAV.levels_per_increment,
+                levelCap: this.configJson.SCAV.level_cap,
+                levelCapValue: this.configJson.SCAV.level_cap_value,
                 healthSkillLevelsPerIncrement: this.configJson.SCAV.health_skill_levels_per_increment,
+                levelHealthSkillCap: this.configJson.SCAV.level_health_skill_cap,
+                levelHealthSkillCapValue: this.configJson.SCAV.level_health_skill_cap_value,
                 healthPerHealthSkillLevel: this.configJson.SCAV.health_per_health_skill_level,
                 baseHealth:
                 {
