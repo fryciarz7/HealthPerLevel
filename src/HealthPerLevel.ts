@@ -213,16 +213,20 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         {
             if (isPmc)
             {
-                this.checkPmcLevelCap();
+                return this.checkPmcLevelCap();
             }
             else if (this.cExports.SCAV.levelCap) //ckeckScavLevelCap
             {
-                this.scavLevel = this.scavLevel > this.cExports.SCAV.levelCapValue ? this.cExports.SCAV.levelCapValue : this.scavLevel;
+                return this.scavLevel > this.cExports.SCAV.levelCapValue ? this.cExports.SCAV.levelCapValue : this.scavLevel;
+            }
+            else
+            {
+                return this.scavLevel;
             }
         } 
         else
         {
-            this.checkPmcLevelCap();
+            return this.checkPmcLevelCap();
         }
     }
 
@@ -231,8 +235,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         if (this.cExports.PMC.levelCap) 
         {
             console.log("🚀 ~ file: HealthPerLevel.ts:229 ~ this.pmcLevel:", this.pmcLevel);
-            this.pmcLevel = this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
+            return this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
             console.log("🚀 ~ file: HealthPerLevel.ts:231 ~ pmcLevel:", this.pmcLevel);
+        }
+        else
+        {
+            return this.pmcLevel;
         }
     }
     
@@ -242,16 +250,20 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         {
             if (isPmc)
             {
-                this.checkPmcHealthSkillLevelCap();
+                return this.checkPmcHealthSkillLevelCap();
             }
             else if (this.cExports.SCAV.levelHealthSkillCap)
             {
-                this.scavHealthSkillLevel.Progress = this.scavHealthSkillLevel.Progress > (this.cExports.SCAV.levelHealthSkillCapValue * 100) ? (this.cExports.SCAV.levelHealthSkillCapValue * 100) : this.scavHealthSkillLevel.Progress;
+                return this.scavHealthSkillLevel.Progress > (this.cExports.SCAV.levelHealthSkillCapValue * 100) ? (this.cExports.SCAV.levelHealthSkillCapValue * 100) : this.scavHealthSkillLevel.Progress;
+            }
+            else
+            {
+                return this.scavHealthSkillLevel.Progress;
             }
         }
         else
         {
-            this.checkPmcHealthSkillLevelCap();
+            return this.checkPmcHealthSkillLevelCap();
         }       
     }
 
@@ -259,7 +271,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     {
         if (this.cExports.PMC.levelHealthSkillCap) 
         {
-            this.pmcHealthSkillLevel.Progress = this.pmcHealthSkillLevel.Progress > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : this.pmcHealthSkillLevel.Progress;
+            return this.pmcHealthSkillLevel.Progress > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : this.pmcHealthSkillLevel.Progress;
+        }
+        else
+        {
+            return this.pmcHealthSkillLevel.Progress;
         }
     }
 
