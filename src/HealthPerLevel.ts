@@ -307,9 +307,9 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        accountLevel = this.checkLevelCap(false);
         if (this.isHealthPoolsSplit()) 
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
+            accountLevel = this.checkLevelCap(false);
             const healthSkillProgress = this.checkHealthSkillLevelCap(false);
             for (const key in this.cExports.SCAV.increasePerLevel) 
             {
@@ -324,6 +324,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
         else 
         {
+            accountLevel = this.checkLevelCap(true);
             const healthSkillProgress = this.checkHealthSkillLevelCap(true);
             for (const key in this.cExports.PMC.increasePerLevel) 
             {
