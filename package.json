@@ -4,7 +4,7 @@
   "main": "src/HealthPerLevel.js",
   "license": "CC BY-NC-SA 4.0",
   "author": "Capataina, MNSTR, fryciarz7",
-  "sptVersion": "~3.9",
+  "sptVersion": "~3.10",
   "scripts": {
     "setup": "npm i",
     "build": "node ./packageBuild.ts",
