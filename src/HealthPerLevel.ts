@@ -205,25 +205,13 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             {
                                 const outputJSON = JSON.parse(output);
                                 if (outputJSON.data?.length) 
-                                {
-                                    // console.log(outputJSON);
-                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:48 ~ outputJSON.data?.length:", outputJSON.data?.length);
-                                    // //console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health:", outputJSON.data[0].Health);
-                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health:", outputJSON.data[0].Health.BodyParts.Head.Health);
-                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0]:", outputJSON.data[0]);
-                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Info:", outputJSON.data[0].Info);
-                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Stats:", outputJSON.data[0].Stats);
-    
-                                    //outputJSON.data[0].Info.Settings.Role
-                                    console.log(this.logPrefix + " ~ file: HealthPerLevel.ts:243 ~ outputJSON.data[0].Info.Settings.Role:", outputJSON.data[0].Info.Settings.Role);
-    
+                                {    
                                     switch (outputJSON.data[0].Info.Settings.Role) 
                                     {
                                         case "pmcBEAR":
                                         case "pmcUSEC":
                                             if (this.cExports.AI.pmcBotHealth)
                                             {
-                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ PMC Level:", outputJSON.data[0].Info.Level);
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
@@ -237,7 +225,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         case "assault":
                                             if (this.cExports.AI.scavBotHealth)
                                             {
-                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ SCAV Level:", outputJSON.data[0].Info.Level);
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
@@ -252,7 +239,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         case "pmcbot":
                                             if (this.cExports.AI.raiderBotHealth)
                                             {
-                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ RAIDER Level:", outputJSON.data[0].Info.Level);
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
@@ -277,7 +263,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         case "bosspunisher":
                                             if (this.cExports.AI.bossBotHealth)
                                             {
-                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ BOSS Level:", outputJSON.data[0].Info.Level);
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
@@ -325,8 +310,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         default:
                                             break;
                                     }
-                                    console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Current:", outputJSON.data[0].Health.BodyParts.Head.Health.Current);
-                                    console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Maximum:", outputJSON.data[0].Health.BodyParts.Head.Health.Maximum);
     
                                     output = JSON.stringify(outputJSON);
                                 }
@@ -387,6 +370,18 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         else
         {
             return this.pmcLevel;
+        }
+    }
+
+    checkBotLevelCap(accountLevel:number): number
+    {
+        if (this.cExports.PMC.levelCap)
+        {
+            return accountLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : accountLevel;
+        }
+        else
+        {
+            return accountLevel;
         }
     }
     
@@ -493,8 +488,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         preset
     ) 
     {
-        // TODO: figure out level cap for bots
-        //accountLevel = this.checkLevelCap(true);
+        accountLevel = this.checkBotLevelCap(accountLevel);
         const healthSkillProgress = this.checkHealthSkillLevelCap(true);
         for (const key in this.cExports.PMC.increasePerLevel) 
         {
@@ -505,7 +499,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 bodyPart[key].Health.Maximum += Math.floor(healthSkillProgress / 100 / this.cExports.PMC.healthSkillLevelsPerIncrement) * this.cExports.PMC.increasePerHealthSkillLevel[key];
             }
             bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
-            console.log("🚀 ~ file: HealthPerLevel.ts:468 ~ bodyPart["+key+"].Health.Maximum:", bodyPart[key].Health.Maximum);
         }
     }
     
@@ -575,35 +568,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         else 
             this.logger.info(this.logPrefix + "Health is elite");
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
-    }
-
-    private changeBotHealth  (container: DependencyContainer) : void
-    {
-        //  /client/game/bot/generate
-        //This area does nothing currently but eventually bots will also increase per their level.
-        
-        // const staticRMS = container.resolve<StaticRouterModService>(
-        //     "StaticRouterModService"
-        // );
-        // staticRMS.registerStaticRouter("HealthPerLevelBots",
-        //     [{
-        //         url: "/client/game/bot/generate",
-        //         action: (url: any, info: any, sessionID: any, output: any) => 
-        //         {
-        //             try 
-        //             {
-        //                 //
-        //             } 
-        //             catch (error) 
-        //             {
-        //                 console.log(this.logPrefix + "error:", error);
-                        
-        //             }
-        //         }
-        //     }],
-        //     "spt"
-        // );
-
     }
 
     private isHealthPoolsSplit() 
