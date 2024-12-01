@@ -420,6 +420,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
+    checkBotHealthSkillLevelCap(healthLevel: number): number 
+    {
+        if (this.cExports.PMC.levelHealthSkillCap) 
+        {
+            return healthLevel > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : healthLevel;
+        }
+    }
+
     private calcPMCHealth(
         bodyPart: BodyPartsHealth,
         accountLevel: number,
@@ -485,11 +493,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private calcBotHealth(
         bodyPart: BodyPartsHealth,
         accountLevel: number,
+        healthLevel: number,
         preset
     ) 
     {
         accountLevel = this.checkBotLevelCap(accountLevel);
-        const healthSkillProgress = this.checkHealthSkillLevelCap(true);
+        const healthSkillProgress = this.checkBotHealthSkillLevelCap(healthLevel);
         for (const key in this.cExports.PMC.increasePerLevel) 
         {
             bodyPart[key].Health.Maximum =
