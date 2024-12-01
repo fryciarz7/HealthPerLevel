@@ -39,6 +39,7 @@ export interface IHealthPerLevelConfig
         enabled:boolean;
         pmcBotHealth:boolean;
         scavBotHealth:boolean;
+        raiderBotHealth:boolean;
         bossBotHealth:boolean;
         followerBotHealth:boolean;
     }
@@ -158,6 +159,7 @@ export class ConfigExports
                 enabled: this.configJson.AI.enabled,
                 pmcBotHealth: this.configJson.AI.pmc_bot_health,
                 scavBotHealth: this.configJson.AI.scav_bot_health,
+                raiderBotHealth: this.configJson.AI.raider_bot_health,
                 bossBotHealth: this.configJson.AI.boss_bot_health,
                 followerBotHealth: this.configJson.AI.follower_bot_health
             }

@@ -107,6 +107,7 @@
         enabled: true,
         pmc_bot_health: true,
         scav_bot_health: false,
+        raider_bot_health: false,
         boss_bot_health: false,
         follower_bot_health: false
     }
