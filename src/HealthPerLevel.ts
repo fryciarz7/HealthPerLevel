@@ -201,14 +201,24 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                     {
                         try 
                         {
-                            //
-                            console.log("🚀 ~ output:", output);
+                            const outputJSON = JSON.parse(output);
+                            if (outputJSON.data?.length) 
+                            {
+                                // console.log(outputJSON);
+                                // console.log("🚀 ~ file: APBSStaticRouterHooks.ts:48 ~ outputJSON.data?.length:", outputJSON.data?.length);
+                                // //console.log("🚀 ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health:", outputJSON.data[0].Health);
+                                // console.log("🚀 ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health:", outputJSON.data[0].Health.BodyParts.Head.Health);
+                                outputJSON.data[0].Health.BodyParts.Head.Health.Current = 1;
+                                outputJSON.data[0].Health.BodyParts.Head.Health.Maximum = 1;
+                                output = JSON.stringify(outputJSON);
+                            }
                         } 
                         catch (error) 
                         {
                             console.log(this.logPrefix + "error:", error);
                             
                         }
+                        return output;
                     }
                 }
             ],
