@@ -440,6 +440,10 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         {
             return healthLevel > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : healthLevel;
         }
+        else
+        {
+            return healthLevel;
+        }
     }
 
     private calcPMCHealth(
