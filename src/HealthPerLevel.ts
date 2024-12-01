@@ -224,6 +224,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
+                                                    helathSkillProgress,
                                                     this.cExports.PMC.baseHealth
                                                 );
                                             }
@@ -237,6 +238,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
+                                                    helathSkillProgress,
                                                     this.cExports.PMC.baseHealth
                                                 );
                                             }
@@ -251,6 +253,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
+                                                    helathSkillProgress,
                                                     this.cExports.PMC.baseHealth
                                                 );
                                             }
@@ -275,6 +278,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
+                                                    helathSkillProgress,
                                                     this.cExports.PMC.baseHealth
                                                 );
                                             }
@@ -305,6 +309,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 this.calcBotHealth(
                                                     outputJSON.data[0].Health.BodyParts,
                                                     outputJSON.data[0].Info.Level,
+                                                    helathSkillProgress,
                                                     this.cExports.PMC.baseHealth
                                                 );
                                             }
