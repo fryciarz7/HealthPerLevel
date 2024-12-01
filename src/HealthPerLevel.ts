@@ -367,6 +367,28 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             }
         }
     }
+
+    private calcBotHealth(
+        bodyPart: BodyPartsHealth,
+        accountLevel: number,
+        preset
+    ) 
+    {
+        // TODO: figure out level cap for bots
+        //accountLevel = this.checkLevelCap(true);
+        const healthSkillProgress = this.checkHealthSkillLevelCap(true);
+        for (const key in this.cExports.PMC.increasePerLevel) 
+        {
+            bodyPart[key].Health.Maximum =
+            preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.PMC.increasePerLevel[key];
+            if (this.cExports.PMC.healthPerHealthSkillLevel == true && this.pmcHealthSkillLevel)
+            {
+                bodyPart[key].Health.Maximum += Math.floor(healthSkillProgress / 100 / this.cExports.PMC.healthSkillLevelsPerIncrement) * this.cExports.PMC.increasePerHealthSkillLevel[key];
+            }
+            bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
+            console.log("🚀 ~ file: HealthPerLevel.ts:468 ~ bodyPart["+key+"].Health.Maximum:", bodyPart[key].Health.Maximum);
+        }
+    }
     
     restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth) 
     {
