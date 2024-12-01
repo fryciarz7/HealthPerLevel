@@ -221,25 +221,44 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                     {
                                         case "pmcBEAR":
                                         case "pmcUSEC":
-                                            console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ PMC Level:", outputJSON.data[0].Info.Level);
-                                            this.calcBotHealth(
-                                                outputJSON.data[0].Health.BodyParts,
-                                                outputJSON.data[0].Info.Level,
-                                                this.cExports.PMC.baseHealth
-                                            );
+                                            if (this.cExports.AI.pmcBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ PMC Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
                                             break;
                                         
                                         case "cursedassault":
                                         case "marksman":
                                         case "assault":
-                                            console.log("SCAV, no health changes should happen");
+                                            if (this.cExports.AI.scavBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ SCAV Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
                                             break;
                                         
                                         case "arenaFighterEvent":
                                         case "arenaFighter":
                                         case "exUsec":
                                         case "pmcbot":
-                                            console.log("RAIDER, no health changes should happen");
+                                            if (this.cExports.AI.raiderBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ RAIDER Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
                                             break;
                                             
                                         case "bossBully":
@@ -256,7 +275,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         case "bossBoarSniper":
                                         case "bosslegion":
                                         case "bosspunisher":
-                                            console.log("BOSS, no health changes should happen");
+                                            if (this.cExports.AI.bossBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ BOSS Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
                                             break;
     
                                         case "followerBully":
@@ -278,7 +305,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                         case "followerBoarClose2":
                                         case "followerKolontayAssault":
                                         case "followerKolontaySecurity":
-                                            console.log("follower, no health changes should happen");
+                                            if (this.cExports.AI.followerBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ FOLLOWER Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
                                             break;
                                             
                                             // case "shooterBTR":
@@ -288,7 +323,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                             //     break;
     
                                         default:
-                                            console.log("DEFAULT");
                                             break;
                                     }
                                     console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Current:", outputJSON.data[0].Health.BodyParts.Head.Health.Current);
