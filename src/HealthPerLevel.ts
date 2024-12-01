@@ -199,103 +199,109 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                     url: "/client/game/bot/generate",
                     action: (url: any, info: any, sessionID: any, output: any) => 
                     {
-                        try 
+                        if (this.cExports.AI.enabled)
                         {
-                            const outputJSON = JSON.parse(output);
-                            if (outputJSON.data?.length) 
+                            try 
                             {
-                                // console.log(outputJSON);
-                                // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:48 ~ outputJSON.data?.length:", outputJSON.data?.length);
-                                // //console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health:", outputJSON.data[0].Health);
-                                // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health:", outputJSON.data[0].Health.BodyParts.Head.Health);
-                                // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0]:", outputJSON.data[0]);
-                                // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Info:", outputJSON.data[0].Info);
-                                // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Stats:", outputJSON.data[0].Stats);
-
-                                //outputJSON.data[0].Info.Settings.Role
-                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts:243 ~ outputJSON.data[0].Info.Settings.Role:", outputJSON.data[0].Info.Settings.Role);
-
-                                switch (outputJSON.data[0].Info.Settings.Role) 
+                                const outputJSON = JSON.parse(output);
+                                if (outputJSON.data?.length) 
                                 {
-                                    case "pmcBEAR":
-                                    case "pmcUSEC":
-                                        console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ PMC Level:", outputJSON.data[0].Info.Level);
-                                        this.calcBotHealth(
-                                            outputJSON.data[0].Health.BodyParts,
-                                            outputJSON.data[0].Info.Level,
-                                            this.cExports.PMC.baseHealth
-                                        );
-                                        break;
-                                    
-                                    case "cursedassault":
-                                    case "marksman":
-                                    case "assault":
-                                        console.log("SCAV, no health changes should happen");
-                                        break;
-                                    
-                                    case "arenaFighterEvent":
-                                    case "arenaFighter":
-                                    case "exUsec":
-                                    case "pmcbot":
-                                        console.log("RAIDER, no health changes should happen");
-                                        break;
+                                    // console.log(outputJSON);
+                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:48 ~ outputJSON.data?.length:", outputJSON.data?.length);
+                                    // //console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health:", outputJSON.data[0].Health);
+                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health:", outputJSON.data[0].Health.BodyParts.Head.Health);
+                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0]:", outputJSON.data[0]);
+                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Info:", outputJSON.data[0].Info);
+                                    // console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Stats:", outputJSON.data[0].Stats);
+    
+                                    //outputJSON.data[0].Info.Settings.Role
+                                    console.log(this.logPrefix + " ~ file: HealthPerLevel.ts:243 ~ outputJSON.data[0].Info.Settings.Role:", outputJSON.data[0].Info.Settings.Role);
+    
+                                    switch (outputJSON.data[0].Info.Settings.Role) 
+                                    {
+                                        case "pmcBEAR":
+                                        case "pmcUSEC":
+                                            console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ PMC Level:", outputJSON.data[0].Info.Level);
+                                            this.calcBotHealth(
+                                                outputJSON.data[0].Health.BodyParts,
+                                                outputJSON.data[0].Info.Level,
+                                                this.cExports.PMC.baseHealth
+                                            );
+                                            break;
                                         
-                                    case "bossBully":
-                                    case "bossTagilla":
-                                    case "bossGluhar":
-                                    case "bossKilla":
-                                    case "bossKojaniy":
-                                    case "bossSanitar":
-                                    case "bossKnight":
-                                    case "bossZryachiy":
-                                    case "bossTest":
-                                    case "bossKolontay":
-                                    case "bossBoar":
-                                    case "bossBoarSniper":
-                                    case "bosslegion":
-                                    case "bosspunisher":
-                                    case "followerBully":
-                                    case "followerGluharAssault":
-                                    case "followerGluharScout":
-                                    case "followerGluharSecurity":
-                                    case "followerGluharSnipe":
-                                    case "followerKojaniy":
-                                    case "followerSanitar":
-                                    case "followerTagilla":
-                                    case "followerBirdEye":
-                                    case "followerBigPipe":
-                                    case "followerZryachiy":
-                                    case "followerTest":
-                                    case "followerBoar":
-                                    case "sectantPriest":
-                                    case "sectantWarrior":
-                                    case "followerBoarClose1":
-                                    case "followerBoarClose2":
-                                    case "followerKolontayAssault":
-                                    case "followerKolontaySecurity":
-                                        console.log("BOSS or follower, no health changes should happen");
-                                        break;
+                                        case "cursedassault":
+                                        case "marksman":
+                                        case "assault":
+                                            console.log("SCAV, no health changes should happen");
+                                            break;
                                         
-                                    case "shooterBTR":
-                                    case "skier":
-                                    case "peacemaker":
-                                        console.log("EVENT, no health changes should happen");
-                                        break;
-
-                                    default:
-                                        console.log("DEFAULT");
-                                        break;
+                                        case "arenaFighterEvent":
+                                        case "arenaFighter":
+                                        case "exUsec":
+                                        case "pmcbot":
+                                            console.log("RAIDER, no health changes should happen");
+                                            break;
+                                            
+                                        case "bossBully":
+                                        case "bossTagilla":
+                                        case "bossGluhar":
+                                        case "bossKilla":
+                                        case "bossKojaniy":
+                                        case "bossSanitar":
+                                        case "bossKnight":
+                                        case "bossZryachiy":
+                                        case "bossTest":
+                                        case "bossKolontay":
+                                        case "bossBoar":
+                                        case "bossBoarSniper":
+                                        case "bosslegion":
+                                        case "bosspunisher":
+                                            console.log("BOSS, no health changes should happen");
+                                            break;
+    
+                                        case "followerBully":
+                                        case "followerGluharAssault":
+                                        case "followerGluharScout":
+                                        case "followerGluharSecurity":
+                                        case "followerGluharSnipe":
+                                        case "followerKojaniy":
+                                        case "followerSanitar":
+                                        case "followerTagilla":
+                                        case "followerBirdEye":
+                                        case "followerBigPipe":
+                                        case "followerZryachiy":
+                                        case "followerTest":
+                                        case "followerBoar":
+                                        case "sectantPriest":
+                                        case "sectantWarrior":
+                                        case "followerBoarClose1":
+                                        case "followerBoarClose2":
+                                        case "followerKolontayAssault":
+                                        case "followerKolontaySecurity":
+                                            console.log("follower, no health changes should happen");
+                                            break;
+                                            
+                                            // case "shooterBTR":
+                                            // case "skier":
+                                            // case "peacemaker":
+                                            //     console.log("EVENT, no health changes should happen");
+                                            //     break;
+    
+                                        default:
+                                            console.log("DEFAULT");
+                                            break;
+                                    }
+                                    console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Current:", outputJSON.data[0].Health.BodyParts.Head.Health.Current);
+                                    console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Maximum:", outputJSON.data[0].Health.BodyParts.Head.Health.Maximum);
+    
+                                    output = JSON.stringify(outputJSON);
                                 }
-                                console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Current:", outputJSON.data[0].Health.BodyParts.Head.Health.Current);
-                                console.log(this.logPrefix + " ~ file: APBSStaticRouterHooks.ts:47 ~ output.data[0].Health.BodyParts.Head.Health.Maximum:", outputJSON.data[0].Health.BodyParts.Head.Health.Maximum);
-
-                                output = JSON.stringify(outputJSON);
+                            } 
+                            catch (error) 
+                            {
+                                console.log(this.logPrefix + "error:", error);
+                                
                             }
-                        } 
-                        catch (error) 
-                        {
-                            console.log(this.logPrefix + "error:", error);
-                            
                         }
                         return output;
                     }
