@@ -35,6 +35,14 @@ export interface IHealthPerLevelConfig
         increasePerLevel: { [key: string]: number };
         increasePerHealthSkillLevel: { [key: string]: number };
     }
+    AI: {
+        enabled:boolean;
+        pmcBotHealth:boolean;
+        scavBotHealth:boolean;
+        raiderBotHealth:boolean;
+        bossBotHealth:boolean;
+        followerBotHealth:boolean;
+    }
 }
 
 export class ConfigExports 
@@ -145,6 +153,15 @@ export class ConfigExports
                     RightArm: this.configJson.SCAV.increase_per_health_skill_level.health_skill_right_arm_per_level,
                     RightLeg: this.configJson.SCAV.increase_per_health_skill_level.health_skill_right_leg_per_level
                 }
+            },
+            AI: 
+            {
+                enabled: this.configJson.AI.enabled,
+                pmcBotHealth: this.configJson.AI.pmc_bot_health,
+                scavBotHealth: this.configJson.AI.scav_bot_health,
+                raiderBotHealth: this.configJson.AI.raider_bot_health,
+                bossBotHealth: this.configJson.AI.boss_bot_health,
+                followerBotHealth: this.configJson.AI.follower_bot_health
             }
         };
     }

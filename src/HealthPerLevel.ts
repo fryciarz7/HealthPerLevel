@@ -18,6 +18,7 @@ import { IHealthPerLevelConfig } from "./ConfigExports";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import { LogBackgroundColor } from "@spt/models/spt/logging/LogBackgroundColor";
+import { BotController } from "@spt/controllers/BotController";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
@@ -36,6 +37,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     private lightBleeding: ILightBleeding; // Probabilit.Threshold = 35% of HP loss per body part
     private heavyBleeding: IHeavyBleeding; // Probabilit.Threshold = 50% of HP loss per body part
     private fracture: IFracture; // Probabilit.Threshold = 20% or 30% of HP loss per body part
+    private botController: BotController;
 
     private cExports: IHealthPerLevelConfig;
 
@@ -51,6 +53,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.lightBleeding = dbServer.config.Health.Effects.LightBleeding;
         this.heavyBleeding = dbServer.config.Health.Effects.HeavyBleeding;
         this.fracture = dbServer.config.Health.Effects.Fracture;
+        this.botController = container.resolve<BotController>("BotController");
     }
 
     preSptLoad(container: DependencyContainer): void 
@@ -191,9 +194,137 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                         }
                         return output;
                     }
+                },
+                {
+                    url: "/client/game/bot/generate",
+                    action: (url: any, info: any, sessionID: any, output: any) => 
+                    {
+                        if (this.cExports.AI.enabled)
+                        {
+                            try 
+                            {
+                                const outputJSON = JSON.parse(output);
+                                if (outputJSON.data?.length) 
+                                {    
+                                    switch (outputJSON.data[0].Info.Settings.Role) 
+                                    {
+                                        case "pmcBEAR":
+                                        case "pmcUSEC":
+                                            if (this.cExports.AI.pmcBotHealth)
+                                            {
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
+                                            break;
+                                        
+                                        case "cursedassault":
+                                        case "marksman":
+                                        case "assault":
+                                            if (this.cExports.AI.scavBotHealth)
+                                            {
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
+                                            break;
+                                        
+                                        case "arenaFighterEvent":
+                                        case "arenaFighter":
+                                        case "exUsec":
+                                        case "pmcbot":
+                                            if (this.cExports.AI.raiderBotHealth)
+                                            {
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
+                                            break;
+                                            
+                                        case "bossBully":
+                                        case "bossTagilla":
+                                        case "bossGluhar":
+                                        case "bossKilla":
+                                        case "bossKojaniy":
+                                        case "bossSanitar":
+                                        case "bossKnight":
+                                        case "bossZryachiy":
+                                        case "bossTest":
+                                        case "bossKolontay":
+                                        case "bossBoar":
+                                        case "bossBoarSniper":
+                                        case "bosslegion":
+                                        case "bosspunisher":
+                                            if (this.cExports.AI.bossBotHealth)
+                                            {
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
+                                            break;
+    
+                                        case "followerBully":
+                                        case "followerGluharAssault":
+                                        case "followerGluharScout":
+                                        case "followerGluharSecurity":
+                                        case "followerGluharSnipe":
+                                        case "followerKojaniy":
+                                        case "followerSanitar":
+                                        case "followerTagilla":
+                                        case "followerBirdEye":
+                                        case "followerBigPipe":
+                                        case "followerZryachiy":
+                                        case "followerTest":
+                                        case "followerBoar":
+                                        case "sectantPriest":
+                                        case "sectantWarrior":
+                                        case "followerBoarClose1":
+                                        case "followerBoarClose2":
+                                        case "followerKolontayAssault":
+                                        case "followerKolontaySecurity":
+                                            if (this.cExports.AI.followerBotHealth)
+                                            {
+                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ FOLLOWER Level:", outputJSON.data[0].Info.Level);
+                                                this.calcBotHealth(
+                                                    outputJSON.data[0].Health.BodyParts,
+                                                    outputJSON.data[0].Info.Level,
+                                                    this.cExports.PMC.baseHealth
+                                                );
+                                            }
+                                            break;
+                                            
+                                            // case "shooterBTR":
+                                            // case "skier":
+                                            // case "peacemaker":
+                                            //     console.log("EVENT, no health changes should happen");
+                                            //     break;
+    
+                                        default:
+                                            break;
+                                    }
+    
+                                    output = JSON.stringify(outputJSON);
+                                }
+                            } 
+                            catch (error) 
+                            {
+                                console.log(this.logPrefix + "error:", error);
+                                
+                            }
+                        }
+                        return output;
+                    }
                 }
             ],
-            "aki"
+            "spt"
         );
     }
 
@@ -239,6 +370,18 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         else
         {
             return this.pmcLevel;
+        }
+    }
+
+    checkBotLevelCap(accountLevel:number): number
+    {
+        if (this.cExports.PMC.levelCap)
+        {
+            return accountLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : accountLevel;
+        }
+        else
+        {
+            return accountLevel;
         }
     }
     
@@ -338,6 +481,26 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             }
         }
     }
+
+    private calcBotHealth(
+        bodyPart: BodyPartsHealth,
+        accountLevel: number,
+        preset
+    ) 
+    {
+        accountLevel = this.checkBotLevelCap(accountLevel);
+        const healthSkillProgress = this.checkHealthSkillLevelCap(true);
+        for (const key in this.cExports.PMC.increasePerLevel) 
+        {
+            bodyPart[key].Health.Maximum =
+            preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.PMC.increasePerLevel[key];
+            if (this.cExports.PMC.healthPerHealthSkillLevel == true && this.pmcHealthSkillLevel)
+            {
+                bodyPart[key].Health.Maximum += Math.floor(healthSkillProgress / 100 / this.cExports.PMC.healthSkillLevelsPerIncrement) * this.cExports.PMC.increasePerHealthSkillLevel[key];
+            }
+            bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
+        }
+    }
     
     restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth) 
     {
@@ -405,13 +568,6 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         else 
             this.logger.info(this.logPrefix + "Health is elite");
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
-    }
-
-    private changeBotHealth  () : void
-    {
-        //  /client/game/bot/generate
-        //This area does nothing currently but eventually bots will also increase per their level.
-
     }
 
     private isHealthPoolsSplit() 
