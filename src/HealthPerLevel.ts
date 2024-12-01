@@ -206,6 +206,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 const outputJSON = JSON.parse(output);
                                 if (outputJSON.data?.length) 
                                 {    
+                                    let helathSkillProgress = 0;
+                                    const healthSkill = outputJSON.data[0].Skills.Common.find(x => x.Id === "Health");
+                                    if (healthSkill !== undefined)
+                                    {
+                                        if (healthSkill.Progress !== undefined)
+                                        {
+                                            helathSkillProgress = healthSkill.Progress;
+                                        }
+                                    }
                                     switch (outputJSON.data[0].Info.Settings.Role) 
                                     {
                                         case "pmcBEAR":
