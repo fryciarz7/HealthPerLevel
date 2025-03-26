@@ -1,10 +1,10 @@
 {
   "name": "HealthPerLevel",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "src/HealthPerLevel.js",
   "license": "CC BY-NC-SA 4.0",
   "author": "Capataina, MNSTR, fryciarz7",
-  "sptVersion": "~3.10",
+  "sptVersion": "~3.11",
   "scripts": {
     "setup": "npm i",
     "build": "node ./packageBuild.ts",
