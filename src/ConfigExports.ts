@@ -1,6 +1,6 @@
 import path from "node:path";
 import { DependencyContainer } from "tsyringe";
-import { VFS } from "@spt/utils/VFS";
+import { FileSystemSync } from "@spt/utils/FileSystemSync";
 import json5 from "json5";
 import { eventNames } from "node:process";
 
@@ -51,8 +51,8 @@ export class ConfigExports
 
     constructor(container: DependencyContainer)
     {
-        const vfs = container.resolve<VFS>("VFS");
-        this.configJson = json5.parse(vfs.readFile(path.resolve(__dirname, "../config/config.json5")));        
+        const fss = container.resolve<FileSystemSync>("FileSystemSync");
+        this.configJson = json5.parse(fss.read(path.resolve(__dirname, "../config/config.json5")));        
     }
 
     public getConfig(): IHealthPerLevelConfig
