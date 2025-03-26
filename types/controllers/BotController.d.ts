@@ -5,15 +5,16 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { MinMax } from "@spt/models/common/MinMax";
-import { Condition, IGenerateBotsRequestData } from "@spt/models/eft/bot/IGenerateBotsRequestData";
+import { ICondition, IGenerateBotsRequestData } from "@spt/models/eft/bot/IGenerateBotsRequestData";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotCore } from "@spt/models/eft/common/tables/IBotCore";
-import { Difficulty } from "@spt/models/eft/common/tables/IBotType";
-import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
+import { IDifficultyCategories } from "@spt/models/eft/common/tables/IBotType";
+import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
+import { IBotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -21,7 +22,7 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
-import { ICloner } from "@spt/utils/cloners/ICloner";
+import type { ICloner } from "@spt/utils/cloners/ICloner";
 export declare class BotController {
     protected logger: ILogger;
     protected databaseService: DatabaseService;
@@ -58,10 +59,11 @@ export declare class BotController {
      * Adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
      * @param diffLevel difficulty level server requested settings for
+     * @param raidConfig OPTIONAL - applicationContext Data stored at start of raid
      * @param ignoreRaidSettings should raid settings chosen pre-raid be ignored
      * @returns Difficulty object
      */
-    getBotDifficulty(type: string, diffLevel: string, ignoreRaidSettings?: boolean): Difficulty;
+    getBotDifficulty(type: string, diffLevel: string, raidConfig?: IGetRaidConfigurationRequestData, ignoreRaidSettings?: boolean): IDifficultyCategories;
     getAllBotDifficulties(): Record<string, any>;
     /**
      * Generate bot profiles and store in cache
@@ -71,30 +73,43 @@ export declare class BotController {
      */
     generate(sessionId: string, info: IGenerateBotsRequestData): Promise<IBotBase[]>;
     /**
-     * On first bot generation bots are generated and stored inside a cache, ready to be used later
+     * Return true if the current cache satisfies the passed in bot generation request
+     * @param info
+     * @returns
+     */
+    cacheSatisfiesRequest(info: IGenerateBotsRequestData): boolean;
+    /**
+     * When we have less bots than necessary to fulfill a request, re-populate the cache
      * @param request Bot generation request object
      * @param pmcProfile Player profile
      * @param sessionId Session id
-     * @returns
+     * @returns IBotBase[]
      */
-    generateBotsFirstTime(request: IGenerateBotsRequestData, pmcProfile: IPmcData, sessionId: string): Promise<IBotBase[]>;
+    protected generateAndCacheBots(request: IGenerateBotsRequestData, pmcProfile: IPmcData | undefined, sessionId: string): Promise<void>;
+    protected getMostRecentRaidSettings(): IGetRaidConfigurationRequestData;
+    /**
+     * Get min/max level range values for a specific map
+     * @param location Map name e.g. factory4_day
+     * @returns MinMax
+     */
+    protected getPmcLevelRangeForMap(location: string): MinMax;
     /**
      * Create a BotGenerationDetails for the bot generator to use
      * @param condition Client data defining bot type and difficulty
      * @param pmcProfile Player who is generating bots
      * @param allPmcsHaveSameNameAsPlayer Should all PMCs have same name as player
-     * @param pmcLevelRangeForMap Min/max levels for PMCs to generate within
+     * @param raidSettings Settings chosen pre-raid by player
      * @param botCountToGenerate How many bots to generate
      * @param generateAsPmc Force bot being generated a PMC
      * @returns BotGenerationDetails
      */
-    protected getBotGenerationDetailsForWave(condition: Condition, pmcProfile: IPmcData, allPmcsHaveSameNameAsPlayer: boolean, pmcLevelRangeForMap: MinMax, botCountToGenerate: number, generateAsPmc: boolean): BotGenerationDetails;
+    protected getBotGenerationDetailsForWave(condition: ICondition, pmcProfile: IPmcData | undefined, allPmcsHaveSameNameAsPlayer: boolean, raidSettings: IGetRaidConfigurationRequestData, botCountToGenerate: number, generateAsPmc: boolean): IBotGenerationDetails;
     /**
      * Get players profile level
      * @param pmcProfile Profile to get level from
      * @returns Level as number
      */
-    protected getPlayerLevelFromProfile(pmcProfile: IPmcData): number;
+    protected getPlayerLevelFromProfile(pmcProfile: IPmcData | undefined): number;
     /**
      * Generate many bots and store then on the cache
      * @param condition the condition details to generate the bots with
@@ -102,7 +117,7 @@ export declare class BotController {
      * @param sessionId Session id
      * @returns A promise for the bots to be done generating
      */
-    protected generateWithBotDetails(condition: Condition, botGenerationDetails: BotGenerationDetails, sessionId: string): Promise<void>;
+    protected generateWithBotDetails(condition: ICondition, botGenerationDetails: IBotGenerationDetails, sessionId: string): Promise<void>;
     /**
      * Generate a single bot and store in the cache
      * @param botGenerationDetails the bot details to generate the bot with
@@ -110,15 +125,14 @@ export declare class BotController {
      * @param cacheKey the cache key to store the bot with
      * @returns A promise for the bot to be stored
      */
-    protected generateSingleBotAndStoreInCache(botGenerationDetails: BotGenerationDetails, sessionId: string, cacheKey: string): Promise<void>;
+    protected generateSingleBotAndStoreInCache(botGenerationDetails: IBotGenerationDetails, sessionId: string, cacheKey: string): Promise<void>;
     /**
-     * Pull a single bot out of cache and return, if cache is empty add bots to it and then return
+     * Return the bots requested by the given bot generation request
      * @param sessionId Session id
      * @param request Bot generation request object
-     * @returns Single IBotBase object
+     * @returns An array of IBotBase objects as requested by request
      */
-    returnSingleBotFromCache(sessionId: string, request: IGenerateBotsRequestData): Promise<IBotBase[]>;
-    protected updateBotGenerationDetailsToRandomBoss(botGenerationDetails: BotGenerationDetails, possibleBossTypeWeights: Record<string, number>): void;
+    protected returnBotsFromCache(request: IGenerateBotsRequestData): Promise<IBotBase[]>;
     /**
      * Get the difficulty passed in, if its not "asonline", get selected difficulty from config
      * @param requestedDifficulty
