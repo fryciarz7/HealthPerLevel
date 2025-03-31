@@ -466,7 +466,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         const bodyPart = isPMC ? this.pmcBodyParts : this.scavBodyParts
         const use_pmc_settings = !this.isHealthPoolsSplit() || isPMC
         const level = use_pmc_settings ? this.pmcLevel : this.scavLevel
-        const skill_level = use_pmc_settings ? this.pmcHealthSkillLevel : this.scavHealthSkillLevel
+        const skill_level:number = use_pmc_settings ? this.pmcHealthSkillLevel : this.scavHealthSkillLevel
         var base = Object.assign({},alt.alt_base_health)
         base["Head"] = ~~(base["Head"] * alt.head_boost)
 
@@ -476,11 +476,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             if (cratio > 1) { this.logger.warning(this.logPrefix + "How is your health higher than maximum, again? I mean your " + key + " is something else.") }
             // Apply other calculations
             bodyPart[key].Health.Maximum = base[key]
+                // HP bonus per Staggered player levels
                 + ~~(level / alt.levels_per_partial_inc[key]) * alt.partial_inc_per_level[key]
-                + ~~(base[key] * (alt.partial_mul_per_skill[key]/1000 * skill_level))
+                // HP multiplier per Health Skill level, when Elite, double the bonus
+                + ~~(base[key] * (alt.partial_mul_per_skill[key]/1000 * skill_level) * (this.healthElite ? 2.0 : 1.0))
+            // If player is level 99 (the max level?) round all HP boost up to the next interval of 5
+            // Looks nicer at the absolute max level
+            if (level>=99) { bodyPart[key].health.Maximum = (~~(bodyPart[key].health.Maximum / 5)+1) * 5 }
             // Scale current health to newly calculated max health
             bodyPart[key].Health.Current = isPMC ? bodyPart[key].Health.Maximum * cratio : bodyPart[key].Health.Maximum
-            // this.logger.warning("Testing: " + key + " Health: " + bodyPart[key].Health.Maximum)
         }
     }
 
