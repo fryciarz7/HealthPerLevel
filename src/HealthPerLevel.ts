@@ -470,7 +470,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         const bodyPart = isPMC ? this.pmcBodyParts : this.scavBodyParts
         const use_pmc_settings = !this.isHealthPoolsSplit() || isPMC
         const level = use_pmc_settings ? this.pmcLevel : this.scavLevel
-        const skill_level:number = use_pmc_settings ? this.pmcHealthSkillLevel : this.scavHealthSkillLevel
+        const skill_level = use_pmc_settings ? this.pmcHealthSkillLevel : this.scavHealthSkillLevel
         var base = Object.assign({},alt.alt_base_health)
         base["Head"] = ~~(base["Head"] * alt.head_boost)
 
