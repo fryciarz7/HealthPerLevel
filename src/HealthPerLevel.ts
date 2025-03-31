@@ -359,10 +359,14 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     postSptLoad(container: DependencyContainer): void
     {
         const presptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
+        this.logger = container.resolve<ILogger>("WinstonLogger");
         if (this.cExports.showRealismWarning && presptModLoader.getImportedModsNames().includes("SPT-Realism"))
         {
-            this.logger = container.resolve<ILogger>("WinstonLogger");
             this.logger.logWithColor(this.logPrefix + "REALISM detected, remember to DISABLE Health changes if you want HealthPerLevel to work!", LogTextColor.YELLOW, LogBackgroundColor.RED);
+        }
+        if (presptModLoader.getImportedModsNames().includes("skulltag-personaltrainer")) 
+        {
+            this.logger.logWithColor(this.logPrefix + "Personal Trainer detected, you will encounter errors!", LogTextColor.YELLOW, LogBackgroundColor.RED);
         }
     }
 
