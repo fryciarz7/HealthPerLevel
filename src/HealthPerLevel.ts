@@ -21,7 +21,7 @@ import { LogBackgroundColor } from "@spt/models/spt/logging/LogBackgroundColor";
 import { BotController } from "@spt/controllers/BotController";
 //The number of skill points to reach level 1 is 10. Afterwards, it increases by 10 per level and is capped at 100 per skill level.
 
-class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod 
+class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 {
     private globalBodyParts: IBodyPartsSettings;
     private pmcBodyParts: BodyPartsHealth;
@@ -43,7 +43,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 
     private logPrefix: string = "[HealthPerLevel] ";
 
-    postDBLoad(container: DependencyContainer): void 
+    postDBLoad(container: DependencyContainer): void
     {
         const dbServer = container
             .resolve<DatabaseServer>("DatabaseServer")
@@ -56,7 +56,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.botController = container.resolve<BotController>("BotController");
     }
 
-    preSptLoad(container: DependencyContainer): void 
+    preSptLoad(container: DependencyContainer): void
     {
         const staticRMS = container.resolve<StaticRouterModService>(
             "StaticRouterModService"
@@ -66,15 +66,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.logger.info(this.logPrefix + "Loading HealthPerLevel...");
         const cHelper = new ConfigExports(container);
         this.cExports = cHelper.getConfig();
-        
+
         staticRMS.registerStaticRouter(
             "HealthPerLevel",
             [
                 {
                     url: "/client/game/start",
-                    action: (url: any, info: any, sessionID: any, output: any) => 
+                    action: (url: any, info: any, sessionID: any, output: any) =>
                     {
-                        try 
+                        try
                         {
                             this.pmcBodyParts = pHelp.getPmcProfile(sessionID).Health.BodyParts;
                             this.pmcLevel = pHelp.getPmcProfile(sessionID).Info.Level;
@@ -87,46 +87,54 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.scavProfile = pHelp.getScavProfile(sessionID);
                             this.scavHealthSkillLevel = pHelp.getSkillFromProfile(this.scavProfile, SkillTypes.HEALTH);
 
-                            if (this.cExports.enabled) 
+                            if (this.cExports.enabled)
                             {
-                                this.checkLevelCap(true);
-                                this.checkLevelCap(false);
-                                this.checkHealthSkillLevelCap(true);
-                                this.checkHealthSkillLevelCap(false);
-                                this.calcPMCHealth(
-                                    this.pmcBodyParts,
-                                    this.pmcLevel,
-                                    this.cExports.PMC.baseHealth
-                                );
-                                if (this.isHealthPoolsSplit()) 
+                                if (this.cExports.ALT.alt_enabled)
                                 {
-                                    this.calcSCAVHealth(
-                                        this.scavBodyParts,
-                                        this.scavLevel,
-                                        this.cExports.SCAV.baseHealth
-                                    );
+                                    this.setALTHealth(true);
+                                    this.setALTHealth(false);
                                 }
-                                else 
+                                else
                                 {
-                                    this.calcSCAVHealth(
-                                        this.scavBodyParts,
+                                    this.checkLevelCap(true);
+                                    this.checkLevelCap(false);
+                                    this.checkHealthSkillLevelCap(true);
+                                    this.checkHealthSkillLevelCap(false);
+                                    this.calcPMCHealth(
+                                        this.pmcBodyParts,
                                         this.pmcLevel,
                                         this.cExports.PMC.baseHealth
                                     );
-                                }
-                                if (this.cExports.keepBleedingChanceConsistant) 
-                                {
-                                    this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                    this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                    this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    if (this.isHealthPoolsSplit())
+                                    {
+                                        this.calcSCAVHealth(
+                                            this.scavBodyParts,
+                                            this.scavLevel,
+                                            this.cExports.SCAV.baseHealth
+                                        );
+                                    }
+                                    else
+                                    {
+                                        this.calcSCAVHealth(
+                                            this.scavBodyParts,
+                                            this.pmcLevel,
+                                            this.cExports.PMC.baseHealth
+                                        );
+                                    }
+                                    if (this.cExports.keepBleedingChanceConsistant)
+                                    {
+                                        this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                        this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                        this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    }
                                 }
                             }
-                            else 
+                            else
                             {
                                 this.restoreDefaultHealth(this.pmcBodyParts, this.scavBodyParts);
                             }
                         }
-                        catch (error) 
+                        catch (error)
                         {
                             this.logger.error(this.logPrefix + error.message);
                         }
@@ -135,9 +143,9 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 },
                 {
                     url: "/client/items", //After load, gets player and scav level
-                    action: (url: any, info: any, sessionID: any, output: any) => 
+                    action: (url: any, info: any, sessionID: any, output: any) =>
                     {
-                        try 
+                        try
                         {
                             this.pmcBodyParts = pHelp.getPmcProfile(sessionID).Health.BodyParts;
                             this.pmcLevel = pHelp.getPmcProfile(sessionID).Info.Level;
@@ -147,48 +155,54 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                             this.scavLevel = pHelp.getScavProfile(sessionID).Info.Level;
 
 
-                            if (this.cExports.enabled) 
+                            if (this.cExports.enabled)
                             {
-                                this.checkLevelCap(true);
-                                this.checkLevelCap(false);
-                                this.checkHealthSkillLevelCap(true);
-                                this.checkHealthSkillLevelCap(false);
-                                this.calcPMCHealth(
-                                    this.pmcBodyParts,
-                                    this.pmcLevel,
-                                    this.cExports.PMC.baseHealth
-                                );
-                                if (this.isHealthPoolsSplit()) 
+                                if (this.cExports.ALT.alt_enabled)
                                 {
-                                    this.calcSCAVHealth(
-                                        this.scavBodyParts,
-                                        this.scavLevel,
-                                        this.cExports.SCAV.baseHealth
-                  
-                                    ); 
+                                    this.setALTHealth(true);
+                                    this.setALTHealth(false);
                                 }
-                                else 
-                                { //If split health is FALSE use this
-                                    this.calcSCAVHealth(
-                                        this.scavBodyParts,
+                                else
+                                {
+                                    this.checkLevelCap(true);
+                                    this.checkLevelCap(false);
+                                    this.checkHealthSkillLevelCap(true);
+                                    this.checkHealthSkillLevelCap(false);
+                                    this.calcPMCHealth(
+                                        this.pmcBodyParts,
                                         this.pmcLevel,
                                         this.cExports.PMC.baseHealth
-                    
                                     );
-                                }
-                                if (this.cExports.keepBleedingChanceConsistant) 
-                                {
-                                    this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                    this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
-                                    this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    if (this.isHealthPoolsSplit())
+                                    {
+                                        this.calcSCAVHealth(
+                                            this.scavBodyParts,
+                                            this.scavLevel,
+                                            this.cExports.SCAV.baseHealth
+                                        );
+                                    }
+                                    else
+                                    { //If split health is FALSE use this
+                                        this.calcSCAVHealth(
+                                            this.scavBodyParts,
+                                            this.pmcLevel,
+                                            this.cExports.PMC.baseHealth
+                                        );
+                                    }
+                                    if (this.cExports.keepBleedingChanceConsistant)
+                                    {
+                                        this.calcLightBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                        this.calcHeavyBleedingThreshold(this.pmcBodyParts, this.pmcLevel);
+                                        this.calcFractureThreshold(this.pmcBodyParts, this.pmcLevel);
+                                    }
                                 }
                             }
-                            else 
+                            else
                             {
                                 this.restoreDefaultHealth(this.pmcBodyParts, this.scavBodyParts);
                             }
                         }
-                        catch (error) 
+                        catch (error)
                         {
                             this.logger.error(this.logPrefix + error.message);
                         }
@@ -197,15 +211,15 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 },
                 {
                     url: "/client/game/bot/generate",
-                    action: (url: any, info: any, sessionID: any, output: any) => 
+                    action: (url: any, info: any, sessionID: any, output: any) =>
                     {
                         if (this.cExports.AI.enabled)
                         {
-                            try 
+                            try
                             {
                                 const outputJSON = JSON.parse(output);
-                                if (outputJSON.data?.length) 
-                                {    
+                                if (outputJSON.data?.length)
+                                {
                                     let helathSkillProgress = 0;
                                     const healthSkill = outputJSON.data[0].Skills.Common.find(x => x.Id === "Health");
                                     if (healthSkill !== undefined)
@@ -215,7 +229,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                             helathSkillProgress = healthSkill.Progress;
                                         }
                                     }
-                                    switch (outputJSON.data[0].Info.Settings.Role) 
+                                    switch (outputJSON.data[0].Info.Settings.Role)
                                     {
                                         case "pmcBEAR":
                                         case "pmcUSEC":
@@ -229,7 +243,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 );
                                             }
                                             break;
-                                        
+
                                         case "cursedassault":
                                         case "marksman":
                                         case "assault":
@@ -243,7 +257,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 );
                                             }
                                             break;
-                                        
+
                                         case "arenaFighterEvent":
                                         case "arenaFighter":
                                         case "exUsec":
@@ -258,7 +272,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 );
                                             }
                                             break;
-                                            
+
                                         case "bossBully":
                                         case "bossTagilla":
                                         case "bossGluhar":
@@ -283,7 +297,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 );
                                             }
                                             break;
-    
+
                                         case "followerBully":
                                         case "followerGluharAssault":
                                         case "followerGluharScout":
@@ -314,24 +328,24 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                                 );
                                             }
                                             break;
-                                            
+
                                             // case "shooterBTR":
                                             // case "skier":
                                             // case "peacemaker":
                                             //     console.log("EVENT, no health changes should happen");
                                             //     break;
-    
+
                                         default:
                                             break;
                                     }
-    
+
                                     output = JSON.stringify(outputJSON);
                                 }
-                            } 
-                            catch (error) 
+                            }
+                            catch (error)
                             {
                                 console.log(this.logPrefix + "error:", error);
-                                
+
                             }
                         }
                         return output;
@@ -352,7 +366,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
-    checkLevelCap(isPmc: boolean) 
+    checkLevelCap(isPmc: boolean)
     {
         if (this.isHealthPoolsSplit())
         {
@@ -368,16 +382,16 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             {
                 return this.scavLevel;
             }
-        } 
+        }
         else
         {
             return this.checkPmcLevelCap();
         }
     }
 
-    checkPmcLevelCap() 
+    checkPmcLevelCap()
     {
-        if (this.cExports.PMC.levelCap) 
+        if (this.cExports.PMC.levelCap)
         {
             return this.pmcLevel > this.cExports.PMC.levelCapValue ? this.cExports.PMC.levelCapValue : this.pmcLevel;
         }
@@ -398,8 +412,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             return accountLevel;
         }
     }
-    
-    checkHealthSkillLevelCap(isPmc: boolean) 
+
+    checkHealthSkillLevelCap(isPmc: boolean)
     {
         if (this.isHealthPoolsSplit())
         {
@@ -419,12 +433,12 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         else
         {
             return this.checkPmcHealthSkillLevelCap();
-        }       
+        }
     }
 
     checkPmcHealthSkillLevelCap()
     {
-        if (this.cExports.PMC.levelHealthSkillCap) 
+        if (this.cExports.PMC.levelHealthSkillCap)
         {
             return this.pmcHealthSkillLevel.Progress > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : this.pmcHealthSkillLevel.Progress;
         }
@@ -434,9 +448,9 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
-    checkBotHealthSkillLevelCap(healthLevel: number): number 
+    checkBotHealthSkillLevelCap(healthLevel: number): number
     {
-        if (this.cExports.PMC.levelHealthSkillCap) 
+        if (this.cExports.PMC.levelHealthSkillCap)
         {
             return healthLevel > (this.cExports.PMC.levelHealthSkillCapValue * 100) ? (this.cExports.PMC.levelHealthSkillCapValue * 100) : healthLevel;
         }
@@ -446,15 +460,39 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
+    private setALTHealth(isPMC:boolean)
+    {
+        const alt = this.cExports.ALT;
+        const bodyPart = isPMC ? this.pmcBodyParts : this.scavBodyParts
+        const use_pmc_settings = !this.isHealthPoolsSplit() || isPMC
+        const level = use_pmc_settings ? this.pmcLevel : this.scavLevel
+        const skill_level = use_pmc_settings ? this.pmcHealthSkillLevel : this.scavHealthSkillLevel
+        var base = Object.assign({},alt.alt_base_health)
+        base["Head"] = ~~(base["Head"] * alt.head_boost)
+
+        for (const key in alt.alt_base_health)
+        {
+            const cratio = bodyPart[key].Health.Current / bodyPart[key].Health.Maximum
+            if (cratio > 1) { this.logger.warning(this.logPrefix + "How is your health higher than maximum, again? I mean your " + key + " is something else.") }
+            // Apply other calculations
+            bodyPart[key].Health.Maximum = base[key]
+                + ~~(level / alt.levels_per_partial_inc[key]) * alt.partial_inc_per_level[key]
+                + ~~(base[key] * (alt.partial_mul_per_skill[key]/1000 * skill_level))
+            // Scale current health to newly calculated max health
+            bodyPart[key].Health.Current = isPMC ? bodyPart[key].Health.Maximum * cratio : bodyPart[key].Health.Maximum
+            // this.logger.warning("Testing: " + key + " Health: " + bodyPart[key].Health.Maximum)
+        }
+    }
+
     private calcPMCHealth(
         bodyPart: BodyPartsHealth,
         accountLevel: number,
         preset
-    ) 
+    )
     {
         accountLevel = this.checkLevelCap(true);
         const healthSkillProgress = this.checkHealthSkillLevelCap(true);
-        for (const key in this.cExports.PMC.increasePerLevel) 
+        for (const key in this.cExports.PMC.increasePerLevel)
         {
             bodyPart[key].Health.Maximum =
             preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.PMC.increasePerLevel[key];
@@ -474,13 +512,13 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         bodyPart: BodyPartsHealth,
         accountLevel: number,
         preset
-    ) 
+    )
     {
-        if (this.isHealthPoolsSplit()) 
+        if (this.isHealthPoolsSplit())
         { //If the config is setup to split scav and PMC health values then it uses the _SCAV config number, otherwise uses the _PMC number
             accountLevel = this.checkLevelCap(false);
             const healthSkillProgress = this.checkHealthSkillLevelCap(false);
-            for (const key in this.cExports.SCAV.increasePerLevel) 
+            for (const key in this.cExports.SCAV.increasePerLevel)
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (this.getScavIncrement(accountLevel)) * this.cExports.SCAV.increasePerLevel[key];
@@ -491,11 +529,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                 bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
             }
         }
-        else 
+        else
         {
             accountLevel = this.checkLevelCap(true);
             const healthSkillProgress = this.checkHealthSkillLevelCap(true);
-            for (const key in this.cExports.PMC.increasePerLevel) 
+            for (const key in this.cExports.PMC.increasePerLevel)
             {
                 bodyPart[key].Health.Maximum =
             preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.PMC.increasePerLevel[key];
@@ -513,11 +551,11 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         accountLevel: number,
         healthLevel: number,
         preset
-    ) 
+    )
     {
         accountLevel = this.checkBotLevelCap(accountLevel);
         const healthSkillProgress = this.checkBotHealthSkillLevelCap(healthLevel);
-        for (const key in this.cExports.PMC.increasePerLevel) 
+        for (const key in this.cExports.PMC.increasePerLevel)
         {
             bodyPart[key].Health.Maximum =
             preset[key] + (this.getPmcIncrement(accountLevel)) * this.cExports.PMC.increasePerLevel[key];
@@ -528,8 +566,8 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             bodyPart[key].Health.Current = bodyPart[key].Health.Maximum;
         }
     }
-    
-    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth) 
+
+    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth)
     {
         this.logger.warning(this.logPrefix + "Mod disabled, restoring default health pools for PMC and Scav...");
         const defaultHealthPools: { [key: string ]: number } =
@@ -556,7 +594,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.calcFractureThreshold(pmcBodyParts, 0);
     }
 
-    private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
+    private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Light Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
@@ -564,7 +602,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
+    private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Heavy Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
@@ -572,7 +610,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number) 
+    private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Fractures Threshold...");
         const baseFallingThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
@@ -592,22 +630,22 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
             this.logger.info(this.logPrefix + "Health found, but not elite");
             return false;
         }
-        else 
+        else
             this.logger.info(this.logPrefix + "Health is elite");
         return this.pmcHealthSkillLevel.Progress >= 5100; // level 51
     }
 
-    private isHealthPoolsSplit() 
+    private isHealthPoolsSplit()
     {
         return this.cExports.splitScavAndPmcHealth == true;
     }
 
-    private getPmcIncrement(accountLevel: number) 
+    private getPmcIncrement(accountLevel: number)
     {
         return Math.trunc((accountLevel - 1) / this.cExports.PMC.levelsPerIncrement);
     }
 
-    private getScavIncrement(accountLevel: number) 
+    private getScavIncrement(accountLevel: number)
     {
         return Math.trunc((accountLevel - 1) / this.cExports.SCAV.levelsPerIncrement);
     }

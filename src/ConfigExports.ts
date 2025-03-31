@@ -11,6 +11,14 @@ export interface IHealthPerLevelConfig
     keepBleedingChanceConsistant:boolean;
     increaseThresholdEveryIncrement: boolean;
     showRealismWarning: boolean;
+    ALT: {
+        alt_enabled:boolean;
+        head_boost:number;
+        alt_base_health:{ [key: string]: number };
+        levels_per_partial_inc:{ [key: string]: number };
+        partial_inc_per_level:{ [key: string]: number };
+        partial_mul_per_skill:{ [key: string]: number };
+    }
     PMC: {
         levelsPerIncrement:number;
         levelCap:boolean;
@@ -45,14 +53,14 @@ export interface IHealthPerLevelConfig
     }
 }
 
-export class ConfigExports 
+export class ConfigExports
 {
     private configJson: any;
 
     constructor(container: DependencyContainer)
     {
         const fss = container.resolve<FileSystemSync>("FileSystemSync");
-        this.configJson = json5.parse(fss.read(path.resolve(__dirname, "../config/config.json5")));        
+        this.configJson = json5.parse(fss.read(path.resolve(__dirname, "../config/config.json5")));
     }
 
     public getConfig(): IHealthPerLevelConfig
@@ -62,12 +70,57 @@ export class ConfigExports
 
     private mapConfig()
     {
-        return { 
+        return {
             enabled: this.configJson.enabled,
             splitScavAndPmcHealth: this.configJson.split_scav_and_PMC_health,
             keepBleedingChanceConsistant: this.configJson.keep_bleeding_chance_consistant,
             increaseThresholdEveryIncrement: this.configJson.increase_threshold_every_increment,
             showRealismWarning: this.configJson.show_realism_warning,
+            ALT:
+            {
+                alt_enabled: this.configJson.ALT.alt_enabled,
+                head_boost: this.configJson.ALT.head_boost,
+                alt_base_health:
+                {
+                    Chest: this.configJson.ALT.alt_base_health.thorax,
+                    Stomach: this.configJson.ALT.alt_base_health.stomach,
+                    Head: this.configJson.ALT.alt_base_health.head,
+                    LeftArm: this.configJson.ALT.alt_base_health.l_arm,
+                    LeftLeg: this.configJson.ALT.alt_base_health.l_leg,
+                    RightArm: this.configJson.ALT.alt_base_health.r_arm,
+                    RightLeg: this.configJson.ALT.alt_base_health.r_leg,
+                },
+                levels_per_partial_inc:
+                {
+                    Chest: this.configJson.ALT.levels_per_partial_inc.thorax,
+                    Stomach: this.configJson.ALT.levels_per_partial_inc.stomach,
+                    Head: this.configJson.ALT.levels_per_partial_inc.head,
+                    LeftArm: this.configJson.ALT.levels_per_partial_inc.l_arm,
+                    LeftLeg: this.configJson.ALT.levels_per_partial_inc.l_leg,
+                    RightArm: this.configJson.ALT.levels_per_partial_inc.r_arm,
+                    RightLeg: this.configJson.ALT.levels_per_partial_inc.r_leg,
+                },
+                partial_inc_per_level:
+                {
+                    Chest: this.configJson.ALT.partial_inc_per_level.thorax,
+                    Stomach: this.configJson.ALT.partial_inc_per_level.stomach,
+                    Head: this.configJson.ALT.partial_inc_per_level.head,
+                    LeftArm: this.configJson.ALT.partial_inc_per_level.l_arm,
+                    LeftLeg: this.configJson.ALT.partial_inc_per_level.l_leg,
+                    RightArm: this.configJson.ALT.partial_inc_per_level.r_arm,
+                    RightLeg: this.configJson.ALT.partial_inc_per_level.r_leg,
+                },
+                partial_mul_per_skill:
+                {
+                    Chest: this.configJson.ALT.partial_mul_per_skill.thorax,
+                    Stomach: this.configJson.ALT.partial_mul_per_skill.stomach,
+                    Head: this.configJson.ALT.partial_mul_per_skill.head,
+                    LeftArm: this.configJson.ALT.partial_mul_per_skill.l_arm,
+                    LeftLeg: this.configJson.ALT.partial_mul_per_skill.l_leg,
+                    RightArm: this.configJson.ALT.partial_mul_per_skill.r_arm,
+                    RightLeg: this.configJson.ALT.partial_mul_per_skill.r_leg,
+                }
+            },
             PMC:
             {
                 levelsPerIncrement: this.configJson.PMC.levels_per_increment,
@@ -154,7 +207,7 @@ export class ConfigExports
                     RightLeg: this.configJson.SCAV.increase_per_health_skill_level.health_skill_right_leg_per_level
                 }
             },
-            AI: 
+            AI:
             {
                 enabled: this.configJson.AI.enabled,
                 pmcBotHealth: this.configJson.AI.pmc_bot_health,
