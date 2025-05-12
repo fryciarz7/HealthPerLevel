@@ -493,7 +493,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     }
 
     private calcPMCHealth(
-        bodyPart: BodyPartsHealth,
+        bodyPart: IBodyPartsHealth,
         accountLevel: number,
         preset
     )
@@ -517,7 +517,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     }
 
     private calcSCAVHealth(
-        bodyPart: BodyPartsHealth,
+        bodyPart: IBodyPartsHealth,
         accountLevel: number,
         preset
     )
@@ -555,7 +555,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
     }
 
     private calcBotHealth(
-        bodyPart: BodyPartsHealth,
+        bodyPart: IBodyPartsHealth,
         accountLevel: number,
         healthLevel: number,
         preset
@@ -575,7 +575,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 
-    restoreDefaultHealth(pmcBodyParts: BodyPartsHealth, scavBodyParts: BodyPartsHealth)
+    restoreDefaultHealth(pmcBodyParts: IBodyPartsHealth, scavBodyParts: IBodyPartsHealth)
     {
         this.logger.warning(this.logPrefix + "Mod disabled, restoring default health pools for PMC and Scav...");
         const defaultHealthPools: { [key: string ]: number } =
@@ -602,7 +602,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.calcFractureThreshold(pmcBodyParts, 0);
     }
 
-    private calcLightBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
+    private calcLightBleedingThreshold(bodyPart: IBodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Light Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 21 + this.getPmcIncrement(accountLevel) : 21;
@@ -610,7 +610,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.lightBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcHeavyBleedingThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
+    private calcHeavyBleedingThreshold(bodyPart: IBodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Heavy Bleeding Threshold...");
         const baseThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 30 + this.getPmcIncrement(accountLevel) : 30;
@@ -618,7 +618,7 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
         this.heavyBleeding.Probability.Threshold = Number.parseFloat(bleedingThreshold);
     }
 
-    private calcFractureThreshold(bodyPart: BodyPartsHealth, accountLevel: number)
+    private calcFractureThreshold(bodyPart: IBodyPartsHealth, accountLevel: number)
     {
         this.logger.info(this.logPrefix + "Calculating Fractures Threshold...");
         const baseFallingThresholdValue: number = this.cExports.increaseThresholdEveryIncrement ? 12 + this.getPmcIncrement(accountLevel) : 12;
