@@ -5,7 +5,7 @@ import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IBodyPartsSettings } from "@spt/models/eft/common/IGlobals";
-import { BodyPartsHealth } from "@spt/models/eft/common/tables/IBotBase";
+import { IBodyPartsHealth } from "@spt/models/eft/common/tables/IBotBase";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common } from "@spt/models/eft/common/tables/IBotBase";
@@ -24,8 +24,8 @@ import { BotController } from "@spt/controllers/BotController";
 class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
 {
     private globalBodyParts: IBodyPartsSettings;
-    private pmcBodyParts: BodyPartsHealth;
-    private scavBodyParts: BodyPartsHealth;
+    private pmcBodyParts: IBodyPartsHealth;
+    private scavBodyParts: IBodyPartsHealth;
     private pmcLevel: number;
     private scavLevel: number;
     private pmcHealthSkillLevel: Common;
