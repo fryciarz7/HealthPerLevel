@@ -220,125 +220,129 @@ class HealthPerLevel implements IPreSptLoadMod, IPostDBLoadMod
                                 const outputJSON = JSON.parse(output);
                                 if (outputJSON.data?.length)
                                 {
-                                    let helathSkillProgress = 0;
-                                    const healthSkill = outputJSON.data[0].Skills.Common.find(x => x.Id === "Health");
-                                    if (healthSkill !== undefined)
+                                    for (let i = 0; i < outputJSON.data?.length; i++) 
                                     {
-                                        if (healthSkill.Progress !== undefined)
+                                        let helathSkillProgress = 0;
+                                        const healthSkill = outputJSON.data[i].Skills.Common.find(x => x.Id === "Health");
+                                        if (healthSkill !== undefined)
                                         {
-                                            helathSkillProgress = healthSkill.Progress;
+                                            if (healthSkill.Progress !== undefined)
+                                            {
+                                                helathSkillProgress = healthSkill.Progress;
+                                            }
                                         }
+                                        switch (outputJSON.data[i].Info.Settings.Role)
+                                        {
+                                            case "pmcBEAR":
+                                            case "pmcUSEC":
+                                            case "pmcBot":
+                                                if (this.cExports.AI.pmcBotHealth)
+                                                {
+                                                    this.calcBotHealth(
+                                                        outputJSON.data[i].Health.BodyParts,
+                                                        outputJSON.data[i].Info.Level,
+                                                        helathSkillProgress,
+                                                        this.cExports.PMC.baseHealth
+                                                    );
+                                                }
+                                                break;
+
+                                            case "cursedassault":
+                                            case "marksman":
+                                            case "assault":
+                                                if (this.cExports.AI.scavBotHealth)
+                                                {
+                                                    this.calcBotHealth(
+                                                        outputJSON.data[i].Health.BodyParts,
+                                                        outputJSON.data[i].Info.Level,
+                                                        helathSkillProgress,
+                                                        this.cExports.PMC.baseHealth
+                                                    );
+                                                }
+                                                break;
+
+                                            case "arenaFighterEvent":
+                                            case "arenaFighter":
+                                            case "exUsec":
+                                            case "pmcbot":
+                                                if (this.cExports.AI.raiderBotHealth)
+                                                {
+                                                    this.calcBotHealth(
+                                                        outputJSON.data[i].Health.BodyParts,
+                                                        outputJSON.data[i].Info.Level,
+                                                        helathSkillProgress,
+                                                        this.cExports.PMC.baseHealth
+                                                    );
+                                                }
+                                                break;
+
+                                            case "bossBully":
+                                            case "bossTagilla":
+                                            case "bossGluhar":
+                                            case "bossKilla":
+                                            case "bossKojaniy":
+                                            case "bossSanitar":
+                                            case "bossKnight":
+                                            case "bossZryachiy":
+                                            case "bossTest":
+                                            case "bossKolontay":
+                                            case "bossBoar":
+                                            case "bossBoarSniper":
+                                            case "bosslegion":
+                                            case "bosspunisher":
+                                                if (this.cExports.AI.bossBotHealth)
+                                                {
+                                                    this.calcBotHealth(
+                                                        outputJSON.data[i].Health.BodyParts,
+                                                        outputJSON.data[i].Info.Level,
+                                                        helathSkillProgress,
+                                                        this.cExports.PMC.baseHealth
+                                                    );
+                                                }
+                                                break;
+
+                                            case "followerBully":
+                                            case "followerGluharAssault":
+                                            case "followerGluharScout":
+                                            case "followerGluharSecurity":
+                                            case "followerGluharSnipe":
+                                            case "followerKojaniy":
+                                            case "followerSanitar":
+                                            case "followerTagilla":
+                                            case "followerBirdEye":
+                                            case "followerBigPipe":
+                                            case "followerZryachiy":
+                                            case "followerTest":
+                                            case "followerBoar":
+                                            case "sectantPriest":
+                                            case "sectantWarrior":
+                                            case "followerBoarClose1":
+                                            case "followerBoarClose2":
+                                            case "followerKolontayAssault":
+                                            case "followerKolontaySecurity":
+                                                if (this.cExports.AI.followerBotHealth)
+                                                {
+                                                    console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ FOLLOWER Level:", outputJSON.data[i].Info.Level);
+                                                    this.calcBotHealth(
+                                                        outputJSON.data[i].Health.BodyParts,
+                                                        outputJSON.data[i].Info.Level,
+                                                        helathSkillProgress,
+                                                        this.cExports.PMC.baseHealth
+                                                    );
+                                                }
+                                                break;
+
+                                                // case "shooterBTR":
+                                                // case "skier":
+                                                // case "peacemaker":
+                                                //     console.log("EVENT, no health changes should happen");
+                                                //     break;
+
+                                            default:
+                                                break;
+                                        }
+
                                     }
-                                    switch (outputJSON.data[0].Info.Settings.Role)
-                                    {
-                                        case "pmcBEAR":
-                                        case "pmcUSEC":
-                                            if (this.cExports.AI.pmcBotHealth)
-                                            {
-                                                this.calcBotHealth(
-                                                    outputJSON.data[0].Health.BodyParts,
-                                                    outputJSON.data[0].Info.Level,
-                                                    helathSkillProgress,
-                                                    this.cExports.PMC.baseHealth
-                                                );
-                                            }
-                                            break;
-
-                                        case "cursedassault":
-                                        case "marksman":
-                                        case "assault":
-                                            if (this.cExports.AI.scavBotHealth)
-                                            {
-                                                this.calcBotHealth(
-                                                    outputJSON.data[0].Health.BodyParts,
-                                                    outputJSON.data[0].Info.Level,
-                                                    helathSkillProgress,
-                                                    this.cExports.PMC.baseHealth
-                                                );
-                                            }
-                                            break;
-
-                                        case "arenaFighterEvent":
-                                        case "arenaFighter":
-                                        case "exUsec":
-                                        case "pmcbot":
-                                            if (this.cExports.AI.raiderBotHealth)
-                                            {
-                                                this.calcBotHealth(
-                                                    outputJSON.data[0].Health.BodyParts,
-                                                    outputJSON.data[0].Info.Level,
-                                                    helathSkillProgress,
-                                                    this.cExports.PMC.baseHealth
-                                                );
-                                            }
-                                            break;
-
-                                        case "bossBully":
-                                        case "bossTagilla":
-                                        case "bossGluhar":
-                                        case "bossKilla":
-                                        case "bossKojaniy":
-                                        case "bossSanitar":
-                                        case "bossKnight":
-                                        case "bossZryachiy":
-                                        case "bossTest":
-                                        case "bossKolontay":
-                                        case "bossBoar":
-                                        case "bossBoarSniper":
-                                        case "bosslegion":
-                                        case "bosspunisher":
-                                            if (this.cExports.AI.bossBotHealth)
-                                            {
-                                                this.calcBotHealth(
-                                                    outputJSON.data[0].Health.BodyParts,
-                                                    outputJSON.data[0].Info.Level,
-                                                    helathSkillProgress,
-                                                    this.cExports.PMC.baseHealth
-                                                );
-                                            }
-                                            break;
-
-                                        case "followerBully":
-                                        case "followerGluharAssault":
-                                        case "followerGluharScout":
-                                        case "followerGluharSecurity":
-                                        case "followerGluharSnipe":
-                                        case "followerKojaniy":
-                                        case "followerSanitar":
-                                        case "followerTagilla":
-                                        case "followerBirdEye":
-                                        case "followerBigPipe":
-                                        case "followerZryachiy":
-                                        case "followerTest":
-                                        case "followerBoar":
-                                        case "sectantPriest":
-                                        case "sectantWarrior":
-                                        case "followerBoarClose1":
-                                        case "followerBoarClose2":
-                                        case "followerKolontayAssault":
-                                        case "followerKolontaySecurity":
-                                            if (this.cExports.AI.followerBotHealth)
-                                            {
-                                                console.log(this.logPrefix + " ~ file: HealthPerLevel.ts ~ FOLLOWER Level:", outputJSON.data[0].Info.Level);
-                                                this.calcBotHealth(
-                                                    outputJSON.data[0].Health.BodyParts,
-                                                    outputJSON.data[0].Info.Level,
-                                                    helathSkillProgress,
-                                                    this.cExports.PMC.baseHealth
-                                                );
-                                            }
-                                            break;
-
-                                            // case "shooterBTR":
-                                            // case "skier":
-                                            // case "peacemaker":
-                                            //     console.log("EVENT, no health changes should happen");
-                                            //     break;
-
-                                        default:
-                                            break;
-                                    }
-
                                     output = JSON.stringify(outputJSON);
                                 }
                             }
